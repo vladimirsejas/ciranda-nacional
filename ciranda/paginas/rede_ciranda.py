@@ -40,7 +40,7 @@ def dominio_link(url):
         return ""
     try:
         partes = urlparse(url)
-        porta = partes.port
+        _ = partes.port
     except ValueError:
         return ""
     if partes.scheme != "https" or not partes.hostname or partes.username or partes.password:
