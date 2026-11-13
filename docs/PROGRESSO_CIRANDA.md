@@ -12,62 +12,49 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 - Código novo da Ciranda fica em `ciranda/`. Nenhum arquivo local ou cópia é criado no computador do usuário.
 - Não foi escolhida licença.
 
-## Execução
+## Comandos 1 a 6 — implementação inicial
 
-### Comando 1 — identidade da instância
+- [x] Manifesto, validação, conversor de catálogo, publicação estática, importação isolada, página Rede Ciranda e guia de execução.
+- [x] Demonstração fictícia e testes de unidade/tela criados.
+- [x] PR #1 aberto para `main`, sem merge.
+- Testes novos e legados da etapa inicial: **NÃO EXECUTADOS** (ambiente de trabalho pelo conector GitHub sem execução Python/Streamlit).
 
-- [x] Branch `federacao` criado a partir de `main`.
-- [x] `ciranda/instancia.py`: manifesto, carregamento e validação em português.
-- [x] `ciranda/instancia.exemplo.json`: exemplo de Rio Claro.
-- [x] `testes/teste_ciranda_instancia.py`.
-- Teste: **NÃO EXECUTADO**.
+## Comando 7 — ponto de entrada independente
 
-### Comando 2 — serviço federável
+- [x] `ciranda/app_ciranda.py`: ponto de entrada Streamlit próprio, ajusta o caminho para a raiz e abre a página Rede Ciranda.
+- [x] Não importa módulos do MISM, nem exige banco, Parquet, dados ou chaves; não contém referências a Gemini.
+- [x] Na primeira abertura importa a demonstração fictícia em `ciranda/importados/`; se o arquivo da instância demo já existe, não o sobrescreve.
+- [x] Faixa superior: “Protótipo de pesquisa. Os serviços exibidos são fictícios, de demonstração.”
+- [x] `testes/teste_ciranda_app.py`: AppTest do ponto de entrada, demonstração automática, não sobrescrita e isolamento.
+- [x] `docs/CIRANDA_COMO_RODAR.md`: comando `streamlit run ciranda/app_ciranda.py` e instruções de implantação Community Cloud (repositório, branch, arquivo principal e requirements da raiz).
+- Teste `testes/teste_ciranda_app.py`: **NÃO EXECUTADO**.
 
-- [x] `ciranda/servico.py`: documento JSON com lista fechada de campos permitidos, origem e data de conferência.
-- [x] Campos extras do item de origem são descartados; `confirmar` vira `a_confirmar` booleano.
-- [x] `testes/teste_ciranda_servico.py`: cobre todos os itens reais de `ITENS`, campos permitidos, marca, data, JSON e descarte de campo extra.
-- Teste: **NÃO EXECUTADO**.
+## Comando 8 — segurança e atualização
 
-### Comando 3 — publicar
+- [x] Respostas remotas limitadas a 2 MB por arquivo.
+- [x] Máximo de 500 serviços por publicação.
+- [x] Campos textuais limitados a 4.000 caracteres; campos com tipos inesperados são rejeitados.
+- [x] Recusa localhost, IPs numéricos e DNS que resolva para IP não global; conexão HTTPS usa o IP público validado, sem seguir redirecionamentos automaticamente.
+- [x] Conteúdo remoto na página é exibido por componentes de texto simples, sem interpretação de Markdown/HTML.
+- [x] Link mostra domínio de destino e o aviso “Link informado por outra instância; confira antes de usar”.
+- [x] `atualizar_instancia`: baixa e valida antes de substituir, arquiva a versão anterior e usa troca atômica; em falha de validação, o arquivo atual não é tocado.
+- [x] Botão **Atualizar** por instância seguida.
+- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, resposta acima de 2 MB, limites de serviço/campo, atualização bem-sucedida e falha sem perda.
+- [x] `testes/teste_ciranda_tela.py` atualizado: texto Markdown/HTML literal, domínio, aviso e botão Atualizar.
+- Testes `testes/teste_ciranda_seguranca.py` e `testes/teste_ciranda_tela.py`: **NÃO EXECUTADOS**.
 
-- [x] `ciranda/publicar.py`: gera WebFinger, perfil `actor.json` e `outbox.json` estáticos.
-- [x] Publicação somente de leitura; não há inbox, assinatura ou chave.
-- [x] Instância e catálogo fictícios em `ciranda/demonstracao/instancia_demo/`.
-- [x] `testes/teste_ciranda_publicar.py`.
-- Teste: **NÃO EXECUTADO**.
-- Propriedades `ciranda:*` são extensões locais **A VERIFICAR**; não se afirma compatibilidade com outras plataformas.
+## Testes pendentes — resultado real
 
-### Comando 4 — seguir e importar
+Todos os testes abaixo permanecem **NÃO EXECUTADO**. O conector GitHub permite gravar e ler arquivos, mas não executa Python ou Streamlit nesta sessão.
 
-- [x] `ciranda/seguir.py`: leitura de URL HTTPS ou pasta local, validação de perfil/outbox e rejeição de estrutura inválida.
-- [x] Importação em arquivo separado por instância, com origem, data de conferência publicada, data de importação e `verificado_localmente: false`.
-- [x] Importação duplicada não sobrescreve arquivo existente.
-- [x] `.gitignore` atualizado para ignorar `ciranda/importados/`.
-- [x] `testes/teste_ciranda_seguir.py`.
-- Teste: **NÃO EXECUTADO**.
+- `testes/teste_ciranda_instancia.py`
+- `testes/teste_ciranda_servico.py`
+- `testes/teste_ciranda_publicar.py`
+- `testes/teste_ciranda_seguir.py`
+- `testes/teste_ciranda_seguranca.py`
+- `testes/teste_ciranda_tela.py`
+- `testes/teste_ciranda_app.py`
+- `MISM2/algoritimos/teste_apoio.py`
+- `MISM2/dashboard/teste_apoio_tela.py`
 
-### Comando 5 — página no painel
-
-- [x] Página nova `ciranda/paginas/rede_ciranda.py`, mantida dentro de `ciranda/` conforme a regra de localização de todo código novo.
-- [x] `app.py` editado para incluir a página Streamlit `Rede Ciranda` em `st.Page` e na navegação. Esta é a alteração existente indispensável para registrar a nova página; as páginas antigas não foram editadas.
-- [x] Formulário para seguir endereço HTTPS, lista de instâncias importadas, selo com nome/identificador de origem e data declarada, e aviso explícito de que a instância local não verificou o item.
-- [x] `testes/teste_ciranda_tela.py` com Streamlit AppTest.
-- Teste de tela: **NÃO EXECUTADO**.
-
-### Comando 6 — fechamento
-
-- [x] `docs/CIRANDA_COMO_RODAR.md`: publicação, importação, abertura da página e comandos de teste.
-- [x] Testes novos e legados identificados para execução; todos permanecem **NÃO EXECUTADO**:
-  - `testes/teste_ciranda_instancia.py`
-  - `testes/teste_ciranda_servico.py`
-  - `testes/teste_ciranda_publicar.py`
-  - `testes/teste_ciranda_seguir.py`
-  - `testes/teste_ciranda_tela.py`
-  - `MISM2/algoritimos/teste_apoio.py`
-  - `MISM2/dashboard/teste_apoio_tela.py`
-- [x] Pull request **#1** aberto de `federacao` para `main`, sem merge: https://github.com/vladimirsejas/ciranda-nacional/pull/1
-
-## Limitações de execução
-
-O acesso de trabalho nesta sessão é pelo conector GitHub, que permite ler e gravar arquivos, mas não executar Python nem Streamlit. Por isso, nenhum teste foi declarado como aprovado; todos permanecem **NÃO EXECUTADO** até uma execução real.
+O PR existente deve receber estes commits automaticamente porque sua origem é a branch `federacao`; não foi feito merge.
