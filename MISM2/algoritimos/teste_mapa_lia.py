@@ -28,7 +28,7 @@ for pergunta in ["mapa de hospitais de câncer", "quais hospitais atendem cânce
     r = e.compreender(pergunta)
     checar(f"'{pergunta}' NÃO vira 'mapa_rio_claro'", not (r.tipo == "intencao" and r.intencao == "mapa_rio_claro"))
 
-checar("o assunto tem rótulo e link para a página do mapa", "mapa_rio_claro" in e.ROTULOS_TODOS and assistente.LINKS["mapa_rio_claro"] == [assistente.LINK_MAPA])
+checar("o assunto tem rótulo e, sem a página do mapa (removida na limpeza), não aponta link quebrado", "mapa_rio_claro" in e.ROTULOS_TODOS and "mapa_rio_claro" not in assistente.LINKS)
 checar("é texto fixo: a IA não reescreve", "mapa_rio_claro" not in assistente.SO_DADOS)
 
 if falhas:

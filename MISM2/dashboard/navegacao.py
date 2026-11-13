@@ -17,12 +17,6 @@ DESTINOS = [
     ("hospitais", "Hospitais de câncer", "pages/hospitais_cancer.py", "/hospitais_cancer"),
 ]
 
-# No site unificado (MISM) existem a página do mapa do grupo (paginas/mapa.py) e a dos gestores (paginas/rio_claro.py): entram no fim, como na página inicial.
-if os.path.exists(os.path.join(AQUI, "..", "..", "paginas", "mapa.py")):
-    DESTINOS.append(("mapa", "Mapa de Rio Claro", "paginas/mapa.py", "/mapa"))
-if os.path.exists(os.path.join(AQUI, "..", "..", "paginas", "rio_claro.py")):
-    DESTINOS.append(("rio_claro", "Estudo de Rio Claro", "paginas/rio_claro.py", "/estudo"))
-
 
 def _ir_ao_inicio():
     st.session_state["aba"] = "Panorama"

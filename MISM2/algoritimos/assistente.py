@@ -658,9 +658,7 @@ def _hospital_de_cancer(ctx, pergunta):
     return Resposta(fala=fala, expressao="acolhedora")
 
 
-LINK_MAPA = ("🗺️ Abrir o Mapa de Rio Claro", "paginas/mapa.py")   # só existe no site unificado; sem a página, o link some sozinho (app.py ignora o erro)
-
-LINKS = {"mapa_rio_claro": [LINK_MAPA], "apoio": [LINK_APOIO], "sintoma": [LINK_APOIO, LINK_ONDE], "onde_atendida": [LINK_ONDE, LINK_APOIO]}
+LINKS = {"apoio": [LINK_APOIO], "sintoma": [LINK_APOIO, LINK_ONDE], "onde_atendida": [LINK_ONDE, LINK_APOIO]}
 
 
 def _tornar(r, **extra):

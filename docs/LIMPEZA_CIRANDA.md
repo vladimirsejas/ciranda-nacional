@@ -80,3 +80,19 @@ Conferidos em `docs/PROGRESSO_CIRANDA.md` (branch `federacao`): comando 7 (ponto
 
 Grafo de importações por `ast` (`import`/`from`, inclusive dentro de funções), com pontos de entrada `app.py` (após a limpeza), `MISM2/dashboard/pages/apoio.py`, tudo em `ciranda/` e os testes mantidos; mais busca de nomes de arquivo em strings do código alcançável. Os grupos abaixo registram cada caminho removido/movido, o motivo e o resultado dos testes depois do grupo.
 
+## Grupo A — estudo de Rio Claro e ferramentas territoriais
+
+| Caminho | Ação | Motivo |
+|---|---|---|
+| `MISM 1/*.py` (calcular_denominadores_usf, calcular_estudo_rio_claro, classificar_areas_usf, consulta_cep, georreferenciar_dados, gerar_mapa) | removido | não alcançáveis a partir do Apoio/ciranda; consulta_cep chamava ViaCEP/BrasilAPI |
+| `MISM 1/.gitignore`, `MISM 1/requirements.txt` | removido | só serviam aos scripts removidos |
+| `MISM 1/dados/referencia/*.geojson` (2) | removido | só o mapa os lia |
+| `MISM 1/readme.md` | movido para `docs/herdado/MISM1_readme.md` | documento herdado |
+| `paginas/` (mapa.py, rio_claro.py) | removido | páginas do mapa/estudo; rotas retiradas de `app.py` |
+| `testes/teste_consulta_cep.py`, `teste_estudo_rio_claro.py`, `teste_mapa_parquet.py` | removido | só testavam o que saiu (os dois últimos já falhavam na linha de base) |
+| `MISM 1/dados/README.md`, `estudo_areas_idade_ajustada.csv`, `estudo_tendencia_por_cancer.csv`, `mulheres_por_area_usf.csv` | **MANTIDO** | lidos por caminho em `MISM2/algoritimos/mism1_conhecimento.py`, importado por `assistente.py`, alcançável pelo Apoio (a Lia explica o mapa com esses agregados) |
+
+Ajustes de links: `assistente.py` perdeu `LINK_MAPA` (apontava para `paginas/mapa.py`; a intenção `mapa_rio_claro` continua respondendo em texto, sem link); `navegacao.py` deixou de acrescentar os botões Mapa/Estudo; `teste_mapa_lia.py` passou a verificar que não há link quebrado.
+
+Testes depois do grupo A (sem os três do painel central, que já falhavam na linha de base e saem no grupo B): **57 de 58 passaram**; a única falha é `teste_mapa_lia.py` ("é texto fixo: a IA não reescreve"), a mesma da linha de base.
+
