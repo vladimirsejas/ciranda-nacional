@@ -24,6 +24,10 @@ def gerar_arquivos(manifesto, catalogo, pasta_saida):
     identificador = manifesto["identificador"]
     actor_url = base + "/actor.json"
     outbox_url = base + "/outbox.json"
+    contexto = [
+        "https://www.w3.org/ns/activitystreams",
+        {"ciranda": "https://ciranda.invalid/ns#"},
+    ]
     webfinger = {
         "subject": "acct:{}@{}".format(identificador, host),
         "links": [{
@@ -34,7 +38,7 @@ def gerar_arquivos(manifesto, catalogo, pasta_saida):
     }
     # Subconjunto estático de leitura. Não há inbox, chaves, assinaturas ou promessa de federação compatível.
     actor = {
-        "@context": "https://www.w3.org/ns/activitystreams",
+        "@context": contexto,
         "id": actor_url,
         "type": "Organization",
         "preferredUsername": identificador,
@@ -51,7 +55,7 @@ def gerar_arquivos(manifesto, catalogo, pasta_saida):
         servico_id = documento["id"]
         objeto = {
             "id": actor_url + "#servico-" + servico_id,
-            # A VERIFICAR: tipo Service e propriedades ciranda:* são extensões locais; não se afirma compatibilidade.
+            # A VERIFICAR: objeto Note e propriedades ciranda:* são extensões locais; não se afirma compatibilidade.
             "type": "Note",
             "name": documento["titulo"],
             "summary": documento["resumo"],
@@ -64,10 +68,7 @@ def gerar_arquivos(manifesto, catalogo, pasta_saida):
             "object": objeto,
         })
     outbox = {
-        "@context": [
-            "https://www.w3.org/ns/activitystreams",
-            {"ciranda": "https://ciranda.invalid/ns#"},
-        ],
+        "@context": contexto,
         "id": outbox_url,
         "type": "OrderedCollection",
         "totalItems": len(atividades),
