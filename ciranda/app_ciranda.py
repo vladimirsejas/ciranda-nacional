@@ -2,7 +2,6 @@
 import json
 import os
 import sys
-import tempfile
 from pathlib import Path
 
 import streamlit as st
@@ -11,7 +10,6 @@ RAIZ = Path(__file__).resolve().parents[1]
 if str(RAIZ) not in sys.path:
     sys.path.insert(0, str(RAIZ))
 
-from ciranda.publicar import gerar_arquivos
 from ciranda.seguir import seguir_instancia
 
 PASTA_IMPORTADOS = Path(os.environ.get(
@@ -28,10 +26,7 @@ def importar_demo_se_necessario(pasta_importados=PASTA_IMPORTADOS):
     arquivo_existente = pasta_importados / (identificador + ".json")
     if arquivo_existente.exists():
         return False
-    catalogo = json.loads((DEMO / "catalogo.json").read_text(encoding="utf-8"))
-    with tempfile.TemporaryDirectory(prefix="ciranda-demo-") as temporario:
-        gerar_arquivos(manifesto, catalogo, temporario)
-        seguir_instancia(temporario, pasta_importados)
+    seguir_instancia(DEMO, pasta_importados)
     return True
 
 
