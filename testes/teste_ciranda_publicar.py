@@ -1,9 +1,11 @@
 import json
 import os
+import sys
 import tempfile
 from pathlib import Path
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, RAIZ)
 from ciranda.publicar import gerar_arquivos
 from ciranda.servico import CAMPOS_PERMITIDOS
 
