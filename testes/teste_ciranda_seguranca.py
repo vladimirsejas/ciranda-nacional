@@ -148,5 +148,11 @@ with tempfile.TemporaryDirectory() as temporario:
     (pasta / "outbox.json").write_text(json.dumps(outbox), encoding="utf-8")
     checar("campo de texto acima do limite é recusado", deve_falhar(
         lambda: seguir._ler_publicacao(pasta)))
+    gerar_arquivos(manifesto, catalogo, pasta)
+    outbox = json.loads((pasta / "outbox.json").read_text(encoding="utf-8"))
+    outbox["orderedItems"][0]["object"]["summary"] = "x" * (seguir.MAX_CAMPO_TEXTO + 1)
+    (pasta / "outbox.json").write_text(json.dumps(outbox), encoding="utf-8")
+    checar("campo textual externo fora do documento de serviço também é limitado",
+           deve_falhar(lambda: seguir._ler_publicacao(pasta)))
 
 print("Testes de segurança e atualização concluídos.")
