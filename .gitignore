@@ -34,3 +34,6 @@ MISM2/algoritimos/explicador_ia.py
 MISM2/dashboard/app.py.backup
 MISM2/resultado_testes_notebook.txt
 MISM2/analises/*.txt
+
+# dados importados de outras instâncias Ciranda: arquivos locais, nunca versionados
+ciranda/importados/
