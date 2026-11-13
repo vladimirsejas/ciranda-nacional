@@ -13,15 +13,13 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 # Mesma ordem e mesmos rótulos da fileira de botões da página inicial (app.py): uma interface só em todas as páginas.
 DESTINOS = [
     ("apoio", "Apoio à mulher", "pages/apoio.py", "/apoio"),
-    ("onde", "Onde ser atendida", "pages/onde_ser_atendida.py", "/onde_ser_atendida"),
-    ("hospitais", "Hospitais de câncer", "pages/hospitais_cancer.py", "/hospitais_cancer"),
 ]
 
 
 def _ir_ao_inicio():
     st.session_state["aba"] = "Panorama"
     try:
-        st.switch_page(os.path.abspath(os.path.join(AQUI, "app.py")))
+        st.switch_page(os.path.abspath(os.path.join(AQUI, "..", "..", "app.py")))
     except Exception:  # página aberta fora do painel (teste isolado): sem destino
         pass
 

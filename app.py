@@ -38,12 +38,9 @@ fonte_parquet.garantir_dados()
 st.set_page_config(page_title="MISM · Saúde da Mulher", page_icon="💗", layout="wide", initial_sidebar_state="collapsed")
 
 D = "MISM2/dashboard"
-central = st.Page(f"{D}/app.py", title="MISM", icon="💗", default=True)
 apoio = st.Page(f"{D}/pages/apoio.py", title="Apoio à mulher", url_path="apoio")
-onde = st.Page(f"{D}/pages/onde_ser_atendida.py", title="Onde ser atendida", url_path="onde_ser_atendida")
-hospitais = st.Page(f"{D}/pages/hospitais_cancer.py", title="Hospitais de câncer", url_path="hospitais_cancer")
-rede_ciranda = st.Page("ciranda/paginas/rede_ciranda.py", title="Rede Ciranda", icon="🔗", url_path="rede_ciranda")
+rede_ciranda = st.Page("ciranda/paginas/rede_ciranda.py", title="Rede Ciranda", icon="🔗", url_path="rede_ciranda", default=True)
 
 # O MISM2 é a tela inicial; a navegação entre as páginas é a barra do próprio MISM2 (a do Streamlit fica escondida).
-pagina = st.navigation([central, apoio, onde, hospitais, rede_ciranda], position="hidden")
+pagina = st.navigation([rede_ciranda, apoio], position="hidden")
 pagina.run()

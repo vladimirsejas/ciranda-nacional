@@ -251,15 +251,15 @@ checar("D. cartões com o botão Abrir a página oficial", "apoio-botao" in text
 at.session_state["ap_aba"] = apoio.LAMINAS["hospitais"]
 at.run()
 tudo = " ".join(m.value for m in at.markdown) + " " + " ".join(str(l.label) for l in getattr(at, "page_link", []) if hasattr(l, "label"))
-checar("D. a área Hospitais no Estado tem a porta para o mapa de hospitais habilitados", not erros(at) and "hospitais_cancer" in tudo)
+checar("D. a área Hospitais no Estado abre sem erro e não aponta para a página removida (hospitais_cancer)", not erros(at) and "hospitais_cancer" not in tudo)
 at.session_state["ap_aba"] = apoio.LAMINAS["rio_claro"]
 at.run()
 # (20/10/2026, autor: "deixe visível na área do Apoio") o atalho curto "Hospital de câncer mais perto de mim" fica SEMPRE no cabeçalho,
 # na barra de navegação (Onde ser atendida, Hospitais de câncer); o convite longo da área Hospitais no Estado continua só nela.
 tudo_rc = " ".join(m.value for m in at.markdown)
 checar("D. o convite longo do mapa NÃO se repete nas outras áreas (só o atalho do cabeçalho)", "Ver todos os hospitais habilitados no mapa" not in tudo_rc)
-checar("D. a barra de navegação (Onde ser atendida, Hospitais de câncer) está sempre à vista no Apoio, mesmo numa área aberta",
-       "Onde ser atendida" in tudo_rc and "Hospitais de câncer" in tudo_rc)
+checar("D. a barra de navegação (só Apoio à mulher, depois da limpeza) está sempre à vista, mesmo numa área aberta",
+       "Apoio à mulher" in tudo_rc and "Onde ser atendida" not in tudo_rc and "Hospitais de câncer" not in tudo_rc)
 at.session_state["ap_hosp_modo"] = "regiao"
 at.session_state["ap_aba"] = apoio.LAMINAS["caminho"]      # as carretas moram em Câncer de mama (sem botão próprio, 20/10/2026)
 at.session_state["ap_boas_vindas_fechada"] = True

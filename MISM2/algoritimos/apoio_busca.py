@@ -622,7 +622,7 @@ def _responder_pergunta(pergunta, classificar=None, contexto=None, cancer_em_foc
         ambiguo = not para_ler and bool(AMBIGUAS.search(texto_norm)) and not re.search(r"\b(peitos?|seios?|mamas?)\b", texto_norm)
         do_exame = [("Caminho do exame", apoio.item("caminho_do_exame"))] if (not para_ler and not ambiguo) or "mama" in para_ler else []
         r = Resposta(fala=assistente.SINTOMA.replace("Na página **Apoio à mulher** está o caminho do cuidado (exames, rede oncológica, direitos). "
-                                                     "Em **Onde ser atendida**, as unidades da sua cidade.",
+                                                     "Para achar a unidade da sua cidade, procure a UBS do seu bairro.",
                                                      "Aqui no guia estão o caminho do exame e o que fazer depois."),
                      expressao="acolhedora",
                      botoes=do_exame + [("Meu exame deu alterado", apoio.etapa("alterado")),

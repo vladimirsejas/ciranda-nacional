@@ -228,7 +228,7 @@ SINTOMA = (
     "o que você percebeu; ela encaminha para exames e especialistas pelo SUS. Se houver sangramento intenso, "
     "dor forte ou você estiver passando mal, vá a uma UPA ou ligue **192**.\n\n"
     "Na página **Apoio à mulher** está o caminho do cuidado (exames, rede oncológica, direitos). "
-    "Em **Onde ser atendida**, as unidades da sua cidade.")
+    "Para achar a unidade da sua cidade, procure a UBS do seu bairro.")
 
 TEXTO_CAUSA = (
     "Boa pergunta, e preciso ser honesta: **o Escudo mostra o que aconteceu nas internações, mas não explica por quê.** "
@@ -310,7 +310,6 @@ def _pede_total_de_mortes(ctx, pergunta):
 PEDE_PROPORCAO = re.compile(r"proporcion|por habitante|per capita|ranking|em relacao a populacao|numero de habitantes|cidades que mais")
 
 LINK_APOIO = ("🩷 Abrir Apoio à mulher", "pages/apoio.py")
-LINK_ONDE = ("📍 Abrir Onde ser atendida", "pages/onde_ser_atendida.py")
 
 EXEMPLOS = [
     ("Qual câncer mais interna?", "mais_aparece"),
@@ -468,7 +467,7 @@ def _ajuda(ctx, ia):
             "hospitalares registrados, tempo de internação, idade, comparação com o Estado, anos fora do padrão, "
             "mulheres de outros estados, se os dados estão completos e como tudo é calculado. Se algum termo técnico "
             "não ficou claro (APAC, valor hospitalar, letalidade, UNACON...), pergunte \"o que é ...?\" que eu explico. Também "
-            "encaminho para **Apoio à mulher** e **Onde ser atendida**. Não faço diagnóstico.")
+            "encaminho para **Apoio à mulher**. Não faço diagnóstico.")
     return Resposta(fala=fala, expressao="acolhedora", botoes=[(r, acao(i, pergunta=r)) for r, i in EXEMPLOS])
 
 
@@ -575,8 +574,8 @@ def _resposta_base(ctx, intencao, cancer, foco, ano, ia):
     if intencao == "onde_atendida":
         return Resposta(
             fala=(f"Para saber **onde procurar atendimento** em {ctx.cidade} (postos de saúde, hospitais, UPA, exames e saúde "
-                  "mental), use a página **Onde ser atendida**: tem endereço, telefone e como chegar. É um cadastro oficial (CNES): "
-                  "não garante vaga nem que o serviço esteja aberto naquele momento. Para **hospital especializado em câncer** (os de "
+                  "mental), procure a UBS do seu bairro ou a Secretaria de Saúde: a Ciranda não traz o cadastro de unidades (CNES) e nenhum "
+                  "serviço tem vaga garantida nem está aberto a toda hora. Para **hospital especializado em câncer** (os de "
                   "referência da região), veja na página **Apoio à mulher** a área **Hospitais no Estado**."), expressao="acolhedora"), None, nota
     return lia_responder(ctx, INICIO), None, nota
 
@@ -658,7 +657,7 @@ def _hospital_de_cancer(ctx, pergunta):
     return Resposta(fala=fala, expressao="acolhedora")
 
 
-LINKS = {"apoio": [LINK_APOIO], "sintoma": [LINK_APOIO, LINK_ONDE], "onde_atendida": [LINK_ONDE, LINK_APOIO]}
+LINKS = {"apoio": [LINK_APOIO], "sintoma": [LINK_APOIO], "onde_atendida": [LINK_APOIO]}
 
 
 def _tornar(r, **extra):
@@ -967,7 +966,7 @@ def montar(ctx, e, pergunta, foco, perfil="TECNICO", ia=None):
         # com o Gemini ligado, ele responde dentro do escopo e o Apoio fica como link; quem procura SERVIÇO (onde, telefone, agendar) segue no texto fixo
         livre = _resposta_livre(ctx, e, pergunta, perfil, ia, comum)
         if livre is not None:
-            livre.links = [LINK_APOIO, LINK_ONDE]
+            livre.links = [LINK_APOIO]
             return livre
     base, usado, nota = _resposta_base(ctx, intencao, pedido, foco, e.ano, ia)
     if intencao == "onde_atendida":

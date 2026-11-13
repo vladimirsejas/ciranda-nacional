@@ -1359,10 +1359,10 @@ PARA_QUEM_HOSPITAL = "Mulheres encaminhadas pela unidade de saúde do bairro (n�
 for _i in ITENS:
     if _i["lamina"] == "hospitais" and not _i["para_quem"]:
         _i["para_quem"] = PARA_QUEM_HOSPITAL
-# Telefones que já estão verificados no cadastro da página "Onde ser atendida" (dados_geograficos/catalogo_servicos_rioclaro.json,
+# Telefones que já estão verificados no catálogo de serviços de Rio Claro (dados_geograficos/catalogo_servicos_rioclaro.json,
 # verificado em 10 e 11/10/2026): o Apoio aponta para o mesmo número, sem tirar a marca "a confirmar" dos cartões.
-POR_ID["rc_cead"]["contato"] += " Fones: (19) 3524-1463 / (19) 3524-1805 (cadastro de Onde ser atendida, verificado em 10/10/2026)."
-POR_ID["rc_ddm"]["contato"] = "Fone: (19) 3533-9009 (cadastro de Onde ser atendida, verificado em 11/10/2026)."
+POR_ID["rc_cead"]["contato"] += " Fones: (19) 3524-1463 / (19) 3524-1805 (catálogo de serviços de Rio Claro, verificado em 10/10/2026)."
+POR_ID["rc_ddm"]["contato"] = "Fone: (19) 3533-9009 (catálogo de serviços de Rio Claro, verificado em 11/10/2026)."
 
 
 def frase_carretas():

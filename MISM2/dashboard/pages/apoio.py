@@ -360,7 +360,7 @@ def botao_inicio(onde, chave):
                      help="Volta à página inicial do Escudo."):
             st.session_state["aba"] = "Panorama"
             try:
-                st.switch_page(os.path.abspath(os.path.join(AQUI, "..", "app.py")))
+                st.switch_page(os.path.abspath(os.path.join(AQUI, "..", "..", "..", "app.py")))
             except Exception:  # Esta página pode ser executada fora do app multipágina.
                 st.warning("Esta página foi aberta como prévia isolada. Para voltar ao Panorama, abra o Apoio "
                            "à mulher pelo dashboard principal.")
@@ -603,8 +603,7 @@ with col_link:
     botao_inicio(st, "topo")
     st.caption("Cada cartão informa sua fonte e data de conferência. Itens marcados “a confirmar” precisam ser verificados antes de usar.")
 
-# Barra de navegação igual à das outras páginas (autor, 20/10/2026): Unidades, telefones e como chegar = "Onde ser atendida";
-# o hospital de câncer mais perto de onde a mulher mora = "Hospitais de câncer". Sempre à vista, em botões grandes.
+# Barra de navegação (depois da limpeza só há o Apoio à mulher; as páginas Onde ser atendida e Hospitais de câncer foram removidas).
 barra_de_navegacao("apoio")
 
 # Emergência sempre à vista (auditoria de usabilidade, 20/10/2026): o número não pode ficar dentro de um menu fechado.
@@ -865,12 +864,6 @@ if aba == apoio.LAMINAS["hospitais"] and st.session_state.get("ap_hosp_modo") !=
     dica("Hospitais habilitados para tratar câncer (CACON e UNACON), por região. Eles não são porta de entrada: "
          "a vaga é pedida pela unidade de saúde, pela regulação do Estado (CROSS).")
     onde_clicar("Clique numa região. Em cada cartão, clique no botão azul <b>Abrir a página oficial</b>.")
-    # Mapa com TODOS os hospitais habilitados (Estado e Brasil), endereço, telefone e os mais próximos da sua cidade: página própria
-    # (uma casa só); o Apoio aponta para ela, como faz com "Onde ser atendida".
-    try:
-        st.page_link("pages/hospitais_cancer.py", label="🗺️ Ver todos os hospitais habilitados no mapa, com os mais próximos da sua cidade")
-    except Exception:  # Streamlit antigo, sem page_link
-        st.markdown('<a href="/hospitais_cancer" target="_self">Ver todos os hospitais habilitados no mapa</a>', unsafe_allow_html=True)
     lamina_por_grupos("hospitais", "Região")
     leitura("Como chegar a um destes hospitais", [
         "Com suspeita ou diagnóstico de câncer, procure a unidade de saúde do bairro: o médico do SUS pede a vaga "

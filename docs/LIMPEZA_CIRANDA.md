@@ -96,3 +96,28 @@ Ajustes de links: `assistente.py` perdeu `LINK_MAPA` (apontava para `paginas/map
 
 Testes depois do grupo A (sem os três do painel central, que já falhavam na linha de base e saem no grupo B): **57 de 58 passaram**; a única falha é `teste_mapa_lia.py` ("é texto fixo: a IA não reescreve"), a mesma da linha de base.
 
+## Grupo B — análise de saúde e pipeline de dados
+
+| Caminho | Ação | Motivo |
+|---|---|---|
+| `MISM2/etl/` (pasta inteira: ~40 scripts de carga/ETL e seus 20 testes) | removido | pipeline de dados do painel; não alcançável do Apoio |
+| `MISM2/analises/catalogo_bases_2013_2025.csv`, `controle_qualidade_bases_2013_2025.csv` | removido | nenhum código ou teste mantido os lê |
+| `MISM2/analises/base_preditiva_2013_2025.csv` | **MANTIDO: dúvida/dependência** | lido por `teste_inteligencia`, `teste_lia`, `teste_previsao`, `teste_glossario`, `teste_assistente` (testes de módulos que ficam) |
+| `MISM2/dashboard/app.py` (painel central), `identidade.py`, `fluxo_animado.py` | removido | painel de análise de saúde; `identidade` só era usado pelo painel |
+| `MISM2/dashboard/pages/hospitais_cancer.py`, `pages/onde_ser_atendida.py` | removido | nada mantido depende deles (o Apoio só tinha *links*, ajustados abaixo) |
+| `MISM2/dashboard/teste_painel.py`, `teste_painel_banco_real.py`, `teste_perguntas_humano.py`, `teste_fluxo_animado.py`, `teste_hospitais_cancer_tela.py`, `teste_onde_atendida_tela.py`, `teste_navegacao.py` | removido | testavam o painel/páginas removidos (os três primeiros já falhavam na linha de base) |
+| `MISM2/algoritimos/passeio.py`, `analise_perguntas.py`, `comparar_regras.py`, `testar_gemini.py` | removido | inalcançáveis; os dois últimos eram ferramentas manuais que chamavam o Gemini |
+| `MISM2/algoritimos/onde_atendida.py`, `unidades_saude.py`, `hospitais_oncologia.py` + `teste_busca_caixa.py`, `teste_onde_atendida.py`, `teste_unidades_saude.py`, `teste_hospitais_oncologia.py` | removido | só serviam às páginas removidas |
+| `MISM2/dados_geograficos/hospitais_oncologia_{br,br_geo,sp}.csv` | removido | lidos só pelo código removido |
+| `MISM2/requirements.txt` | removido | duplicava o `requirements.txt` da raiz |
+| `MISM2/.github/workflows/testes.yml` | movido para `docs/herdado/MISM2/testes_ci_herdado.yml` | CI herdado (listava os testes removidos; ficava dentro de MISM2, nunca rodou no GitHub) |
+| `MISM2/algoritimos/conversa.py` + `teste_conversa.py` | **MANTIDO** | `teste_entendimento.py` (testa `entendimento`, que fica) compara a caixa nova com `conversa.entender` |
+| `MISM2/algoritimos/inteligencia.py`, `assistente.py`, `lia.py`, `mism1_conhecimento.py`, `localizacao.py`, `configuracao_geografica.py` | **MANTIDO** | importados pelo Apoio (`lia`→`inteligencia`; `apoio_busca`→`assistente`→`mism1_conhecimento`/`localizacao`) |
+| `MISM2/algoritimos/fonte_parquet.py` | MANTIDO por ora | importado por `configuracao_geografica`; tratado na etapa de rede |
+| `MISM2/algoritimos/conferir_links.py` + teste | **MANTIDO** | ferramenta de manutenção prevista (fora das páginas) |
+| `MISM2/.gitignore`, `MISM2/.gitattributes`, `MISM2/.streamlit/` | MANTIDO: dúvida | configuração inócua; o `.gitignore` guarda a exceção dos CSV |
+
+Ajustes de links e textos para não apontar para páginas removidas: `app.py` (rotas central/onde/hospitais retiradas; Rede Ciranda é a inicial provisória), botão "🏠 Início" do Apoio e de `navegacao.py` agora voltam ao `app.py` da raiz, a barra de navegação ficou só com "Apoio à mulher", o convite "Ver todos os hospitais habilitados no mapa" do Apoio foi retirado, `LINK_ONDE` removido de `assistente.py`, textos da Lia/glossário que mandavam "ir à página Onde ser atendida" passaram a mandar procurar a UBS, e as notas "cadastro de Onde ser atendida" do catálogo viraram "catálogo de serviços de Rio Claro". Testes ajustados para refletir isso: `teste_apoio_tela.py`, `teste_assistente.py`.
+
+Testes depois do grupo B: **27 de 28 passaram**; a única falha continua sendo `teste_mapa_lia.py` (a mesma da linha de base).
+

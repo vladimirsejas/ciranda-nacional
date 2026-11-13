@@ -162,7 +162,7 @@ TERMOS = {
         ["ubs", "usf", "unidade basica de saude", "unidade de saude da familia", "posto de saude"],
         "A **UBS** (Unidade Básica de Saúde) e a **USF** (Unidade de Saúde da Família) são os postos de saúde do bairro, a "
         "**porta de entrada do SUS**: consultas, preventivo, pedido de mamografia e encaminhamento.",
-        "O Apoio à mulher e a página Onde ser atendida mostram as unidades da cidade, com telefone e como chegar quando o "
+        "O Apoio à mulher mostra as unidades da cidade, com telefone e como chegar quando o "
         "cadastro tem."),
     "sus": (
         "SUS",

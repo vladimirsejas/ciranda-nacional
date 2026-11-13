@@ -185,7 +185,7 @@ def main():
                r.tipo == "risco" and all(m in r.fala for m in marcas) and asst.LINK_APOIO in r.links and not r.usou_ia)
     r = perguntar("senti um caroço no peito, será que é câncer?", ia=g.ia())
     checar("6. sintoma: texto fixo ('não faço diagnóstico'), UBS, 192, links; a IA não improvisa",
-           "Eu não faço diagnóstico" in r.fala and "UBS" in r.fala and "192" in r.fala and len(r.links) == 2 and not r.usou_ia)
+           "Eu não faço diagnóstico" in r.fala and "UBS" in r.fala and "192" in r.fala and len(r.links) == 1 and not r.usou_ia)
     for pergunta in ("onde faço mamografia aqui perto?", "meus direitos como paciente de câncer", "quero comparar com campinas", "o que você consegue responder?"):
         perguntar(pergunta, ia=g.ia())
     checar("6. apoio, onde ser atendida, comparar cidades e ajuda: a IA nem é chamada",
@@ -296,7 +296,7 @@ def main():
            r.intencao in ("apoio", "onde_atendida") and "Hospitais no Estado" in r.fala)
     r = perguntar("endereço de algum hospital de câncer")
     checar("7d. endereço de hospital (cadastro da cidade) também aponta o 'Hospitais no Estado' para câncer",
-           "Hospitais no Estado" in r.fala and any(a == "pages/onde_ser_atendida.py" for _, a in r.links))
+           "Hospitais no Estado" in r.fala and any(a == "pages/apoio.py" for _, a in r.links))
 
     # ---- 7e. com a população do IBGE no banco, a Lia responde o ranking proporcional de verdade ----
     import pandas as _pd
@@ -349,7 +349,7 @@ def main():
     checar("7f. cidade citada que aparece no catálogo (Araraquara): mostra o hospital ligado a ela, não só Rio Claro",
            r.intencao == "onde_atendida" and "Araraquara" in r.fala and "Hospitais do catálogo" in r.fala)
     r = asst.responder_pergunta(ctx, "onde ser atendida em Rio Claro, posto de saúde", foco, ia=asst.IA())
-    checar("7f. posto de saúde (sem câncer) continua com o texto de Onde ser atendida", r.intencao == "onde_atendida" and "Onde ser atendida" in r.fala)
+    checar("7f. posto de saúde (sem câncer) manda procurar a UBS, sem apontar página removida", r.intencao == "onde_atendida" and "UBS" in r.fala and "Onde ser atendida" not in r.fala)
 
     # ---- 7g. quimio/radio (SIA) e mortalidade real (SIM): só descrevem, e sem as tabelas dizem o que falta ----
     trat = _pd.DataFrame(
