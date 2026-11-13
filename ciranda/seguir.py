@@ -39,6 +39,9 @@ def _resolver_endereco_publico(url):
         raise ValueError("Endereços IP numéricos não são permitidos; use um nome público.")
     try:
         porta = partes.port or 443
+    except ValueError as erro:
+        raise ValueError("O endereço contém uma porta inválida.") from erro
+    try:
         respostas = socket.getaddrinfo(host, porta, type=socket.SOCK_STREAM)
     except OSError as erro:
         raise ValueError("Não foi possível resolver o endereço público: {}".format(erro)) from erro
@@ -228,8 +231,9 @@ def atualizar_instancia(arquivo_importado, pasta_historico=None):
     """Atualiza uma instância seguida; valida antes e mantém cópia histórica antes da troca atômica."""
     arquivo = Path(arquivo_importado)
     try:
-        anterior = json.loads(arquivo.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as erro:
+        conteudo_anterior = arquivo.read_bytes()
+        anterior = json.loads(conteudo_anterior.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as erro:
         raise ValueError("Não foi possível ler a importação atual: {}".format(erro)) from erro
     instancia_anterior = anterior.get("instancia", {}) if isinstance(anterior, dict) else {}
     identificador_anterior = instancia_anterior.get("identificador")
@@ -245,8 +249,16 @@ def atualizar_instancia(arquivo_importado, pasta_historico=None):
     historico = Path(pasta_historico) if pasta_historico else arquivo.parent / "historico"
     historico.mkdir(parents=True, exist_ok=True)
     marca_tempo = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    copia = historico / "{}_{}.json".format(identificador_anterior, marca_tempo)
-    shutil.copy2(arquivo, copia)
+    nome_base = "{}_{}.json".format(identificador_anterior, marca_tempo)
+    copia = historico / nome_base
+    sufixo = 1
+    while copia.exists():
+        copia = historico / "{}_{}_{}.json".format(identificador_anterior, marca_tempo, sufixo)
+        sufixo += 1
+    with copia.open("xb") as destino_historico:
+        destino_historico.write(conteudo_anterior)
+        destino_historico.flush()
+        os.fsync(destino_historico.fileno())
 
     temporario = None
     try:
