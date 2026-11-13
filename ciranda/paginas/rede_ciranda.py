@@ -57,12 +57,12 @@ if adicionar:
     else:
         try:
             resultado = seguir_instancia(endereco.strip(), PASTA_IMPORTADOS)
-            st.success("{} serviço(s) importado(s) de {}.".format(
+            st.text("{} serviço(s) importado(s) de {}.".format(
                 resultado["total_servicos"], resultado["identificador"]))
         except FileExistsError as erro:
-            st.warning(str(erro))
+            st.text(str(erro))
         except (ValueError, OSError) as erro:
-            st.error(str(erro))
+            st.text(str(erro))
 
 instancias = carregar_importacoes()
 if not instancias:
@@ -73,15 +73,15 @@ else:
         instancia = dados.get("instancia", {})
         nome = instancia.get("nome") or instancia.get("identificador") or arquivo.stem
         identificador = instancia.get("identificador") or arquivo.stem
-        st.subheader(str(nome))
+        st.text("Instância: " + str(nome))
         st.text("Endereço público: " + str(instancia.get("endereco_publico", "não informado")))
         if st.button("Atualizar", key="atualizar_" + str(identificador)):
             try:
                 resultado = atualizar_instancia(arquivo)
-                st.success("{} serviço(s) atualizados.".format(resultado["total_servicos"]))
+                st.text("{} serviço(s) atualizados.".format(resultado["total_servicos"]))
                 st.rerun()
             except (ValueError, OSError) as erro:
-                st.error("Atualização não realizada. A versão anterior foi preservada. {}".format(erro))
+                st.text("Atualização não realizada. A versão anterior foi preservada. {}".format(erro))
         servicos = dados.get("servicos", [])
         if not servicos:
             st.text("Esta instância ainda não publicou serviços.")
@@ -109,7 +109,7 @@ else:
             if dominio:
                 st.text("Domínio do link: " + dominio)
                 st.text("Link informado por outra instância; confira antes de usar")
-                st.link_button("Abrir fonte — " + dominio, link)
+                st.link_button("Abrir fonte informada", link)
             if servico.get("a_confirmar"):
                 st.text("A publicação informa que este item ainda precisa de confirmação.")
             st.divider()
