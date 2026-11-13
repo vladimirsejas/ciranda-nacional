@@ -153,11 +153,17 @@ def _ler_publicacao(origem):
     identificador = actor.get("preferredUsername")
     if not isinstance(identificador, str) or not IDENTIFICADOR_RE.fullmatch(identificador):
         raise ValueError("Perfil inválido: identificador da instância ausente ou inválido.")
-    if not isinstance(actor.get("id"), str) or not actor["id"].startswith("https://"):
+    if not isinstance(actor.get("id"), str):
         raise ValueError("Perfil inválido: endereço público do perfil ausente ou inválido.")
+    endereco_perfil = urlparse(actor["id"])
+    if (endereco_perfil.scheme != "https" or not endereco_perfil.hostname
+            or endereco_perfil.username or endereco_perfil.password
+            or endereco_perfil.query or endereco_perfil.fragment
+            or not endereco_perfil.path.endswith("/actor.json")):
+        raise ValueError("Perfil inválido: use URL HTTPS pública terminada em /actor.json.")
     if not local:
         host_solicitado = urlparse(str(origem)).hostname
-        if urlparse(actor["id"]).hostname != host_solicitado:
+        if endereco_perfil.hostname != host_solicitado:
             raise ValueError("O perfil publicado não corresponde ao domínio consultado.")
     if not isinstance(outbox, dict) or outbox.get("type") != "OrderedCollection":
         raise ValueError("Lista de publicações inválida: esperado OrderedCollection.")
