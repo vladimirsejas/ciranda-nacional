@@ -1,0 +1,15 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    {"ciranda": "https://ciranda.invalid/ns#"}
+  ],
+  "id": "https://instancia-a.exemplo.invalid/actor.json",
+  "type": "Organization",
+  "preferredUsername": "instancia-a-demo",
+  "name": "DEMONSTRAÇÃO — Instância A",
+  "summary": "Instância Ciranda fictícia. Publica somente catálogo público de serviços de apoio.",
+  "url": "https://instancia-a.exemplo.invalid",
+  "outbox": "https://instancia-a.exemplo.invalid/outbox.json",
+  "ciranda:tipo": "cidade",
+  "ciranda:contatoPublico": "DEMONSTRAÇÃO — contato fictício"
+}

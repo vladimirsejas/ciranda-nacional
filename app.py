@@ -27,6 +27,8 @@ for _nome in ("GEMINI_API_KEY", "GEMINI_MODEL"):
 # são importados direto): a pasta dashboard precisa estar no caminho de importação.
 sys.path.insert(0, str(Path(__file__).resolve().parent / "MISM2" / "dashboard"))
 sys.path.insert(0, str(Path(__file__).resolve().parent / "MISM2" / "algoritimos"))
+# A Ciranda mantém seus módulos novos isolados em sua própria pasta.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # Hospedagem: sem a pasta dados_parquet no servidor, baixa os arquivos do dataset privado (MISM_DATASET/HF_TOKEN). Local: não faz nada.
 import fonte_parquet  # noqa: E402
@@ -42,7 +44,8 @@ onde = st.Page(f"{D}/pages/onde_ser_atendida.py", title="Onde ser atendida", url
 hospitais = st.Page(f"{D}/pages/hospitais_cancer.py", title="Hospitais de câncer", url_path="hospitais_cancer")
 mapa = st.Page("paginas/mapa.py", title="Mapa de Rio Claro", icon="🗺️", url_path="mapa")
 dados_rc = st.Page("paginas/rio_claro.py", title="Estudo de Rio Claro", icon="📍", url_path="estudo")
+rede_ciranda = st.Page("ciranda/paginas/rede_ciranda.py", title="Rede Ciranda", icon="🔗", url_path="rede_ciranda")
 
 # O MISM2 é a tela inicial; a navegação entre as páginas é a barra do próprio MISM2 (a do Streamlit fica escondida).
-pagina = st.navigation([central, dados_rc, apoio, onde, hospitais, mapa], position="hidden")
+pagina = st.navigation([central, dados_rc, apoio, onde, hospitais, mapa, rede_ciranda], position="hidden")
 pagina.run()
