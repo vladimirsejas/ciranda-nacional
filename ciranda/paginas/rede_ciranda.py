@@ -48,7 +48,6 @@ def dominio_link(url):
     return partes.hostname
 
 
-st.set_page_config(page_title="Rede Ciranda", page_icon="🔗", layout="wide")
 st.title("Rede Ciranda")
 st.text("Veja serviços de apoio publicados por outras instâncias da Ciranda. As informações continuam sob responsabilidade de quem publicou.")
 
