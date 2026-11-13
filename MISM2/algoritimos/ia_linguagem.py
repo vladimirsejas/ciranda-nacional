@@ -9,7 +9,6 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT_DIR / ".env")
 
 # O nome do modelo pode ser trocado no .env (GEMINI_MODEL=...) sem mexer no código.
-# `py algoritimos\testar_gemini.py` mostra quais nomes a sua chave aceita.
 MODELO = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 TEMPO_LIMITE_MS = 25000  # a caixa da Lia não pode ficar esperando para sempre
 

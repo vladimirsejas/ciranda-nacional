@@ -13,27 +13,12 @@ from pathlib import Path
 
 import streamlit as st
 
-# Hospedagem: o MISM2 lê a chave do Gemini só da variável de ambiente (ou do .env, que não vai para o GitHub). Se ela vier
-# dos Secrets do Streamlit, vira variável de ambiente aqui, antes de qualquer página. Local (com .env) nada muda.
-for _nome in ("GEMINI_API_KEY", "GEMINI_MODEL"):
-    if not os.environ.get(_nome):
-        try:
-            if _nome in st.secrets:
-                os.environ[_nome] = str(st.secrets[_nome])
-        except Exception:  # sem secrets (uso local)
-            pass
-
 # O MISM2 foi feito para rodar com dashboard/app.py como entrada (os módulos irmãos, como lia_rosto e estilo,
 # são importados direto): a pasta dashboard precisa estar no caminho de importação.
 sys.path.insert(0, str(Path(__file__).resolve().parent / "MISM2" / "dashboard"))
 sys.path.insert(0, str(Path(__file__).resolve().parent / "MISM2" / "algoritimos"))
 # A Ciranda mantém seus módulos novos isolados em sua própria pasta.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-# Hospedagem: sem a pasta dados_parquet no servidor, baixa os arquivos do dataset privado (MISM_DATASET/HF_TOKEN). Local: não faz nada.
-import fonte_parquet  # noqa: E402
-
-fonte_parquet.garantir_dados()
 
 st.set_page_config(page_title="MISM · Saúde da Mulher", page_icon="💗", layout="wide", initial_sidebar_state="collapsed")
 

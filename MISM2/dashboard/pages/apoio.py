@@ -75,7 +75,7 @@ a.apoio-botao:hover { background: #1f5fae; }
 [class*="st-key-ap_pilulas"] label[data-baseweb="radio"]:has(input:checked) div { color: #ffffff; font-weight: 600; }
 .apoio-fluxo { background: #fff; border: 1px solid #e3dcf2; border-radius: 14px; padding: 10px 12px; min-height: 150px; }
 .apoio-fluxo .n { color: #9b8fc4; font-weight: 700; font-size: .8rem; }
-.apoio-fluxo b { font-family: 'Manrope', sans-serif; color: #292541; display: block; }
+.apoio-fluxo b { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #292541; display: block; }
 .apoio-fluxo span { color: #625d72; font-size: .85rem; }
 .apoio-etapa { background: #fff; border: 1px solid #e3dcf2; border-left: 6px solid #4a3d78; border-radius: 14px;
                padding: 12px 16px; margin: 8px 0; color: #3d3852; font-size: 1.02rem; }
@@ -109,7 +109,7 @@ a.apoio-botao:hover { background: #1f5fae; }
 [class*="st-key-apoio_ajuda_aqui"] button p { color: #5b2a55 !important; font-weight: 800; font-size: 1.35rem; }
 .apoio-ajuda-sub { color: #4b3a52; font-size: .98rem; margin: 6px 2px 14px; }
 .apoio-ajuda-sub b { color: #5b2a55; }
-.apoio-grupo { font-family: 'Manrope', sans-serif; font-weight: 700; color: #4a3d78; font-size: 1rem; margin: 18px 0 0; }
+.apoio-grupo { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 700; color: #4a3d78; font-size: 1rem; margin: 18px 0 0; }
 </style>
 """, unsafe_allow_html=True)
 

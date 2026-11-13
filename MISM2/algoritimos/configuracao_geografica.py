@@ -4,13 +4,7 @@ import sqlite3
 
 RAIZ_PROJETO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BANCO_LEGADO = os.path.join(RAIZ_PROJETO, "banco", "escudo_feminino.db")
-try:
-    # Dados em Parquet (dados_parquet/mism2): o SQLite é montado a partir deles num cache local.
-    # Sem a pasta de Parquet, vale o banco de sempre (banco\escudo_feminino.db).
-    from fonte_parquet import caminho_do_banco
-    BANCO = caminho_do_banco(BANCO_LEGADO)
-except ImportError:
-    BANCO = BANCO_LEGADO
+BANCO = BANCO_LEGADO  # SQLite local opcional: sem ele, quem consulta recebe o aviso de falta de dados
 
 MUNICIPIO_PADRAO = "RIO_CLARO"
 UF_REFERENCIA = "SP"

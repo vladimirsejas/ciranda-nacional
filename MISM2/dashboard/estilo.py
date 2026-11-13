@@ -9,15 +9,14 @@
 
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
+html, body, [class*="css"] { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
 .stApp { background: #f8f7fb; }
 .block-container { max-width: 1180px; padding-top: 3.2rem; padding-bottom: 4rem; }
-h1, h2, h3 { font-family: 'Manrope', sans-serif; color: #292541; letter-spacing: -0.02em; }
+h1, h2, h3 { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #292541; letter-spacing: -0.02em; }
 .escudo-marca { color: #7565a8; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.escudo-titulo { font-family: 'Manrope', sans-serif; color: #292541; font-size: 2.1rem; font-weight: 700; line-height: 1.15; margin: 4px 0 6px; }
+.escudo-titulo { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #292541; font-size: 2.1rem; font-weight: 700; line-height: 1.15; margin: 4px 0 6px; }
 .escudo-sub { color: #625d72; font-size: 1.02rem; max-width: 760px; }
-.escudo-pergunta { font-family: 'Manrope', sans-serif; color: #292541; font-size: 1.35rem; font-weight: 700; margin: 26px 0 2px; }
+.escudo-pergunta { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #292541; font-size: 1.35rem; font-weight: 700; margin: 26px 0 2px; }
 .escudo-dica { color: #8a8599; font-size: .88rem; margin-bottom: 4px; }
 .escudo-escopo { display: inline-block; font-size: .82rem; font-weight: 700; border-radius: 999px; padding: 4px 13px; margin: 4px 0 8px; }
 .escudo-escopo small { font-weight: 500; font-size: 1em; opacity: .9; }
@@ -29,7 +28,7 @@ h1, h2, h3 { font-family: 'Manrope', sans-serif; color: #292541; letter-spacing:
 div[data-baseweb="select"] > div { border-radius: 12px; background: #fff; }
 .escudo-info { background: #f3f2f8; border: 1px solid #e6e3ef; border-radius: 16px; padding: 12px 18px; margin-top: 10px; color: #4d4863; font-size: .92rem; }
 .escudo-cartao { background: #fff; border: 1px solid #ebe8f2; border-radius: 16px; padding: 16px 20px; margin: 10px 0; }
-.escudo-cartao h4 { margin: 0 0 6px 0; font-family: 'Manrope', sans-serif; color: #292541; }
+.escudo-cartao h4 { margin: 0 0 6px 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #292541; }
 .escudo-cartao li { margin: 3px 0; color: #3d3852; }
 .escudo-cartao .acao { color: #4d4863; font-size: .92rem; margin-top: 6px; }
 .radar-cartao { border-left: 6px solid #b9b7c4; }
@@ -42,9 +41,9 @@ div[data-baseweb="select"] > div { border-radius: 12px; background: #fff; }
 .radar-selo.estavel { background: #efeef3; color: #625d72; }
 .radar-faixa { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 4px; }
 .radar-faixa div { flex: 1 1 200px; background: #fff; border: 1px solid #ebe8f2; border-radius: 16px; padding: 10px 14px; }
-.radar-faixa b { font-family: 'Manrope', sans-serif; font-size: 1.5rem; }
+.radar-faixa b { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 1.5rem; }
 .radar-faixa span { color: #706b82; font-size: .9rem; }
-.lia-nome { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.25rem; color: #292541; }
+.lia-nome { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 700; font-size: 1.25rem; color: #292541; }
 .lia-nome span { font-weight: 500; font-size: .95rem; color: #706b82; }
 .lia-cargo { color: #706b82; font-size: .85rem; line-height: 1.3; }
 .lia-fala-grande { color: #3d3852; font-size: 1.08rem; margin: 2px 0 10px; }
@@ -96,7 +95,7 @@ div[data-baseweb="select"] > div { border-radius: 12px; background: #fff; }
 [class*="st-key-passeiocard_"] .passeio-topo { font-size: .74rem; font-weight: 700; letter-spacing: .1em;
     text-transform: uppercase; color: #0b7a6b; }
 [class*="st-key-passeiocard_"] .passeio-pontos { color: #0f9d8a; letter-spacing: 3px; font-size: .9rem; }
-[class*="st-key-passeiocard_"] .passeio-titulo { font-family: 'Manrope', sans-serif; font-weight: 700; color: #134e48;
+[class*="st-key-passeiocard_"] .passeio-titulo { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 700; color: #134e48;
     font-size: 1.05rem; margin: 2px 0 6px; }
 [class*="st-key-passeiocard_"] p { color: #1f3d3a; }
 [class*="st-key-passeiocard_"] .stButton button { border-radius: 8px; background: #ffffff; border: 1px solid #99e0d6;
@@ -233,6 +232,6 @@ section[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [da
 /* ---- "Running..." do Streamlit (topo, à direita) vira só "Carregando…", sem o homenzinho nem o nome da função ---- */
 [data-testid="stStatusWidget"] { font-size: 0 !important; }
 [data-testid="stStatusWidget"] * { display: none !important; }
-[data-testid="stStatusWidget"]::after { content: "Carregando…"; font-size: .85rem; color: #5b2a55; font-family: 'DM Sans', sans-serif; }
+[data-testid="stStatusWidget"]::after { content: "Carregando…"; font-size: .85rem; color: #5b2a55; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
 </style>
 """

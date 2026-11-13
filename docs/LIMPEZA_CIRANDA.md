@@ -134,3 +134,29 @@ Testes depois do grupo B: **27 de 28 passaram**; a única falha continua sendo `
 
 Testes depois do grupo C: **27 de 28 passaram** (mesma única falha, `teste_mapa_lia.py`).
 
+## Rede: chamadas externas eliminadas do código vivo
+
+| Mudança | Detalhe |
+|---|---|
+| `app.py` | saíram `fonte_parquet.garantir_dados()` (download do Hugging Face com `MISM_DATASET`/`HF_TOKEN`) e a ponte `st.secrets` → `GEMINI_API_KEY`/`GEMINI_MODEL` |
+| `MISM2/algoritimos/fonte_parquet.py` | removido (era o download do Hugging Face e a montagem do banco a partir de `dados_parquet`); `configuracao_geografica.py` passou a usar só o SQLite local opcional (`BANCO`), sem importar o módulo |
+| `MISM2/dashboard/estilo.py` e `pages/apoio.py` | removido o `@import` de fontes do Google; `'DM Sans'` e `'Manrope'` viraram a pilha do sistema `system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`; nenhuma outra regra visual foi alterada |
+| IBGE, BrasilAPI, ViaCEP | só existiam em `MISM 1/consulta_cep.py` e no ETL, ambos removidos |
+| `requirements.txt` | reduzido ao que é importado (versões fixadas): `streamlit`, `pandas`, `numpy`, `python-dotenv`, `google-genai`. Saíram `pyarrow`, `plotly`, `pydeck` e `huggingface_hub` (nenhum é importado); `numpy` entrou porque `inteligencia.py` o importa direto (versão a mesma já instalada com o pandas) |
+
+Chamadas de rede que **restam** (todas intencionais):
+
+- `ciranda/seguir.py` — federação (HTTPS, só para a instância que a pessoa escolher seguir).
+- `MISM2/algoritimos/conferir_links.py` — ferramenta de manutenção, fora das páginas.
+- `MISM2/algoritimos/ia_linguagem.py` — Gemini: mantido porque `apoio_busca`/`assistente` o importam; só roda com `GEMINI_API_KEY` no ambiente/.env (`chave_configurada()`); sem chave, `obter_classificador()` devolve `None`, a caixa não mostra a opção e nada chama a rede. No Apoio, `caixa_ap_gemini_ativo` nasce `False`. Com a ponte de `st.secrets` removida, a chave deixa de ser lida da hospedagem automaticamente.
+
+Resultado do grep nos arquivos vivos (`.py`, `.toml`, `.txt`, `.yml`, `.json`, fora de `docs/` e de testes):
+
+| Termo | Onde resta | Motivo |
+|---|---|---|
+| `dados_parquet` | `mism1_conhecimento.py` | caminho **local opcional** (`GEO`) de um Parquet que não existe no repositório; leitura dentro de `try/except`, sem rede; o teste `teste_resposta_livre` usa esse atributo |
+| `GEMINI` | `ia_linguagem.py` (nome das variáveis de ambiente), `apoio.py` (chave de sessão `caixa_ap_gemini_ativo`, desligada por padrão), `assistente.py`, `apoio_busca.py`, `entendimento.py`, `conversa.py`, `mism1_conhecimento.py`, `gabarito_perguntas.json` | uso opcional descrito acima; nos demais arquivos são comentários, textos da Lia ("IA desligada") e uma pergunta de gabarito |
+| `HF_TOKEN`, `brasilapi`, `viacep`, `servicodados`, `huggingface`, `googleapis` | — (nenhuma ocorrência) | |
+
+Testes depois deste passo: **27 de 28 passaram** (mesma única falha, `teste_mapa_lia.py`).
+
