@@ -38,7 +38,11 @@ def dominio_link(url):
     """Retorna apenas o domínio de um link HTTPS válido."""
     if not isinstance(url, str):
         return ""
-    partes = urlparse(url)
+    try:
+        partes = urlparse(url)
+        porta = partes.port
+    except ValueError:
+        return ""
     if partes.scheme != "https" or not partes.hostname or partes.username or partes.password:
         return ""
     return partes.hostname
