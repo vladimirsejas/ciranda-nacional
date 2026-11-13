@@ -23,7 +23,7 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 
 - [x] `ciranda/app_ciranda.py`: ponto de entrada Streamlit próprio, ajusta o caminho para a raiz e abre a página Rede Ciranda.
 - [x] Não importa módulos do MISM, nem exige banco, Parquet, dados ou chaves; não contém referências a Gemini.
-- [x] Na primeira abertura importa a demonstração fictícia em `ciranda/importados/`; se o arquivo da instância demo já existe, não o sobrescreve.
+- [x] Perfil e outbox estáticos adicionados à pasta da demonstração; na primeira abertura importa diretamente de `ciranda/demonstracao/instancia_demo/` para `ciranda/importados/`, sem pasta temporária e sem sobrescrever arquivo existente.
 - [x] Faixa superior: “Protótipo de pesquisa. Os serviços exibidos são fictícios, de demonstração.”
 - [x] `testes/teste_ciranda_app.py`: AppTest do ponto de entrada, demonstração automática, não sobrescrita e isolamento.
 - [x] `docs/CIRANDA_COMO_RODAR.md`: comando `streamlit run ciranda/app_ciranda.py` e instruções de implantação Community Cloud (repositório, branch, arquivo principal e requirements da raiz).
@@ -33,13 +33,13 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 
 - [x] Respostas remotas limitadas a 2 MB por arquivo.
 - [x] Máximo de 500 serviços por publicação.
-- [x] Campos textuais limitados a 4.000 caracteres; campos com tipos inesperados são rejeitados.
+- [x] Todos os textos do perfil e do envelope, além dos campos de serviço, limitados a 4.000 caracteres; tipos inesperados são rejeitados.
 - [x] Recusa localhost, IPs numéricos e DNS que resolva para IP não global; conexão HTTPS usa o IP público validado, sem seguir redirecionamentos automaticamente.
 - [x] Conteúdo remoto na página é exibido por componentes de texto simples, sem interpretação de Markdown/HTML.
 - [x] Link mostra domínio de destino e o aviso “Link informado por outra instância; confira antes de usar”.
 - [x] `atualizar_instancia`: baixa e valida antes de substituir, arquiva a versão anterior e usa troca atômica; em falha de validação, o arquivo atual não é tocado.
 - [x] Botão **Atualizar** por instância seguida.
-- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, resposta acima de 2 MB, limites de serviço/campo, atualização bem-sucedida e falha sem perda.
+- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, resposta acima de 2 MB, limites de 500 serviços e texto, atualização bem-sucedida e falha sem perda.
 - [x] `testes/teste_ciranda_tela.py` atualizado: texto Markdown/HTML literal, domínio, aviso e botão Atualizar.
 - Testes `testes/teste_ciranda_seguranca.py` e `testes/teste_ciranda_tela.py`: **NÃO EXECUTADOS**.
 
