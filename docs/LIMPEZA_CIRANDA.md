@@ -121,3 +121,16 @@ Ajustes de links e textos para não apontar para páginas removidas: `app.py` (r
 
 Testes depois do grupo B: **27 de 28 passaram**; a única falha continua sendo `teste_mapa_lia.py` (a mesma da linha de base).
 
+## Grupo C — herança operacional e documentos herdados
+
+| Caminho | Ação | Motivo |
+|---|---|---|
+| `Abrir MISM.bat`, `SITE.bat`, `MISM2/Abrir Escudo Feminino.bat`, `MISM2/Atualizar dados do Escudo.bat`, `MISM2/Testar IA (Gemini).bat` | removido | atalhos de Windows do MISM (carga de dados, Gemini); a Ciranda roda com `streamlit run app.py` |
+| `preparar_dados_deploy.py` | removido | preparava dados Parquet/Hugging Face para o MISM |
+| `MISM2/CLAUDE.md`, `MISM2/README.md` | movido → `docs/herdado/MISM2/` | documento herdado |
+| `MISM2/docs/` (inclui imagens `lia_originais` e o PDF do roteiro) | movido → `docs/herdado/MISM2/docs/` | documento herdado; nenhum código lê esses arquivos (só comentários os citam) |
+| `LEIAME.md`, `HOSPEDAR.md`, `FONTES_DOS_DADOS.md`, `PROGRESSO.md` (raiz) | movido → `docs/herdado/` | documento herdado |
+| `README.md` (raiz) | **MANTIDO** | já é a apresentação da Ciranda |
+
+Testes depois do grupo C: **27 de 28 passaram** (mesma única falha, `teste_mapa_lia.py`).
+
