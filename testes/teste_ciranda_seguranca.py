@@ -155,4 +155,56 @@ with tempfile.TemporaryDirectory() as temporario:
     checar("campo textual externo fora do documento de serviço também é limitado",
            deve_falhar(lambda: seguir._ler_publicacao(pasta)))
 
+
+
+# A conexão deve usar o IP público validado, não resolver o nome novamente.
+alvos_conexao = []
+getaddrinfo_original = socket.getaddrinfo
+create_connection_original = socket.create_connection
+https_original = seguir.http.client.HTTPSConnection
+
+
+class RespostaPequena:
+    status = 200
+
+    def getheader(self, nome):
+        return "2"
+
+    def read(self, limite):
+        return b"{}"
+
+
+class ConexaoFixada:
+    def __init__(self, host, port=443, timeout=15):
+        self.host = host
+        self.port = port
+        self.timeout = timeout
+        self.source_address = None
+
+    def request(self, *args, **kwargs):
+        self._create_connection((self.host, self.port), self.timeout, self.source_address)
+
+    def getresponse(self):
+        return RespostaPequena()
+
+    def close(self):
+        pass
+
+
+try:
+    socket.getaddrinfo = lambda *args, **kwargs: [
+        (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))
+    ]
+    socket.create_connection = lambda endereco, timeout, source: (
+        alvos_conexao.append(endereco) or object()
+    )
+    seguir.http.client.HTTPSConnection = ConexaoFixada
+    seguir._baixar_corpo_https("https://publico.exemplo.org/actor.json")
+    checar("conexão usa exatamente o IP público previamente validado",
+           alvos_conexao == [("93.184.216.34", 443)])
+finally:
+    socket.getaddrinfo = getaddrinfo_original
+    socket.create_connection = create_connection_original
+    seguir.http.client.HTTPSConnection = https_original
+
 print("Testes de segurança e atualização concluídos.")
