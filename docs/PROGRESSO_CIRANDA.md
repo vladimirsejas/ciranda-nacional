@@ -14,33 +14,44 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 
 ## Execução
 
-### Comando 1 — identidade da instância
+### Comandos 1 e 2 — identidade e serviço federável
 
-- [x] `ciranda/instancia.py`, manifesto de exemplo e `testes/teste_ciranda_instancia.py` criados.
-- Teste: **NÃO EXECUTADO** (o conector GitHub não executa Python).
-- Painel não alterado.
-
-### Comando 2 — serviço federável
-
-- [x] `ciranda/servico.py`: documento JSON com lista fechada de campos permitidos, origem e data de conferência.
-- [x] `testes/teste_ciranda_servico.py`: cobre os itens reais de `ITENS`, campos permitidos, marca, data, JSON e descarte de campo extra.
-- Teste: **NÃO EXECUTADO**.
+- [x] Manifesto, validação e exemplo de instância.
+- [x] Conversor de catálogo com lista fechada de campos permitidos.
+- [x] Testes `testes/teste_ciranda_instancia.py` e `testes/teste_ciranda_servico.py`.
+- Testes: **NÃO EXECUTADOS**.
 
 ### Comando 3 — publicar
 
-- [x] `ciranda/publicar.py`: gera WebFinger, perfil `actor.json` e `outbox.json` estáticos.
-- [x] Publicação somente de leitura; não há inbox, assinatura ou chave.
+- [x] `ciranda/publicar.py`: WebFinger, perfil `actor.json` e `outbox.json` estáticos.
 - [x] Instância e catálogo fictícios em `ciranda/demonstracao/instancia_demo/`.
-- [x] `testes/teste_ciranda_publicar.py`: valida JSON, perfil, publicações, lista de campos e ausência de campos proibidos.
+- [x] `testes/teste_ciranda_publicar.py`.
 - Teste: **NÃO EXECUTADO**.
+- Propriedades `ciranda:*` são extensões locais **A VERIFICAR**; não se afirma compatibilidade com outras plataformas.
 
 ### Comando 4 — seguir e importar
 
 - [x] `ciranda/seguir.py`: leitura de URL HTTPS ou pasta local, validação de perfil/outbox e rejeição de estrutura inválida.
 - [x] Importação em arquivo separado por instância, com origem, data de conferência publicada, data de importação e `verificado_localmente: false`.
 - [x] Importação duplicada não sobrescreve arquivo existente.
-- [x] `.gitignore` atualizado para ignorar `ciranda/importados/` (único arquivo existente alterado até aqui, além do próprio registro de progresso).
-- [x] `testes/teste_ciranda_seguir.py`: fluxo A publica/B importa, proveniência, datas, rejeição de inválido e integridade do catálogo local.
+- [x] `.gitignore` atualizado para ignorar `ciranda/importados/`.
+- [x] `testes/teste_ciranda_seguir.py`.
 - Teste: **NÃO EXECUTADO**.
 
-Dúvidas/decisões: a importação por URL usa HTTPS e consulta `actor.json` e `outbox.json` na raiz do endereço público. O arquivo local de cada instância é criado uma única vez; para atualizar ou substituir uma importação será necessário um procedimento explícito futuro, nunca sobrescrita automática.
+### Comando 5 — página no painel
+
+- [x] Página nova `ciranda/paginas/rede_ciranda.py`, mantida dentro de `ciranda/` conforme a regra de localização de todo código novo.
+- [x] `app.py` editado para incluir a página Streamlit `Rede Ciranda` em `st.Page` e na navegação. Esta é a alteração existente indispensável para registrar a nova página; as páginas antigas não foram editadas.
+- [x] Formulário para seguir endereço HTTPS, lista de instâncias importadas, selo com origem/data declaradas e aviso explícito de que a instância local não verificou o item.
+- [x] `testes/teste_ciranda_tela.py` com Streamlit AppTest.
+- Teste de tela: **NÃO EXECUTADO**.
+
+### Comando 6 — fechamento
+
+- [ ] Guia de execução.
+- [ ] Rodada final de testes.
+- [ ] Pull request de `federacao` para `main`, sem merge.
+
+## Limitações de execução
+
+O acesso de trabalho nesta sessão é pelo conector GitHub, que permite ler e gravar arquivos, mas não executar Python nem Streamlit. Por isso, nenhum teste foi declarado como aprovado; todos permanecem **NÃO EXECUTADO** até uma execução real.
