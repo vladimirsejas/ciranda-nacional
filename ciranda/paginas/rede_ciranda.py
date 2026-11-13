@@ -1,7 +1,6 @@
 """Página de consulta aos serviços públicos recebidos de outras instâncias."""
 import html
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -60,6 +59,7 @@ else:
     for arquivo, dados in instancias:
         instancia = dados.get("instancia", {})
         nome = instancia.get("nome") or instancia.get("identificador") or arquivo.stem
+        identificador = instancia.get("identificador") or arquivo.stem
         st.markdown("### " + str(nome))
         st.caption("Endereço público: " + str(instancia.get("endereco_publico", "não informado")))
         servicos = dados.get("servicos", [])
@@ -67,7 +67,7 @@ else:
             st.caption("Esta instância ainda não publicou serviços.")
         for registro in servicos:
             servico = registro.get("servico", {})
-            origem = registro.get("origem") or instancia.get("identificador") or "instância externa"
+            origem = "{} ({})".format(nome, registro.get("origem") or identificador)
             data = registro.get("data_conferencia_publicada") or "não informada"
             st.markdown(
                 '<div style="display:inline-block;background:#eee8f7;color:#49376f;'
