@@ -39,7 +39,7 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 - [x] Link mostra domínio de destino e o aviso “Link informado por outra instância; confira antes de usar”.
 - [x] `atualizar_instancia`: baixa e valida antes de substituir, arquiva a versão anterior e usa troca atômica; em falha de validação, o arquivo atual não é tocado.
 - [x] Botão **Atualizar** por instância seguida.
-- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, resposta acima de 2 MB, limites de 500 serviços e texto, atualização bem-sucedida e falha sem perda.
+- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, IP fixado na conexão, resposta acima de 2 MB, limites de 500 serviços e texto, atualização bem-sucedida e falha sem perda.
 - [x] `testes/teste_ciranda_tela.py` atualizado: texto Markdown/HTML literal, domínio, aviso e botão Atualizar.
 - Testes `testes/teste_ciranda_seguranca.py` e `testes/teste_ciranda_tela.py`: **NÃO EXECUTADOS**.
 
