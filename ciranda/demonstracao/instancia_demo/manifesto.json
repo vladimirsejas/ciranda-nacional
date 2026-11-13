@@ -1,0 +1,8 @@
+{
+  "nome": "DEMONSTRAÇÃO — Instância A",
+  "tipo": "cidade",
+  "municipio": "Cidade Exemplo",
+  "endereco_publico": "https://instancia-a.exemplo.invalid",
+  "contato_publico": "DEMONSTRAÇÃO — contato fictício",
+  "identificador": "instancia-a-demo"
+}
