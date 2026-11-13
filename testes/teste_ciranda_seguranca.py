@@ -113,7 +113,7 @@ with tempfile.TemporaryDirectory() as temporario:
 
     # Atualização bem-sucedida preserva uma cópia histórica e troca os serviços.
     preparar_publicacao(publicacao, "DEMONSTRAÇÃO — Serviço atualizado")
-    resultado = seguir.atualizar_instancia(arquivo)
+    resultado = seguir.atualizar_instancia(arquivo, endereco=publicacao)
     atualizado = json.loads(arquivo.read_text(encoding="utf-8"))
     historico = Path(resultado["historico"])
     anterior = json.loads(historico.read_text(encoding="utf-8"))
@@ -126,7 +126,7 @@ with tempfile.TemporaryDirectory() as temporario:
     # Uma publicação inválida deve falhar antes de qualquer substituição.
     conteudo_antes_falha = arquivo.read_bytes()
     (publicacao / "outbox.json").write_text("{ JSON inválido", encoding="utf-8")
-    falhou = deve_falhar(lambda: seguir.atualizar_instancia(arquivo))
+    falhou = deve_falhar(lambda: seguir.atualizar_instancia(arquivo, endereco=publicacao))
     checar("atualização com arquivo inválido falha", falhou)
     checar("falha de atualização preserva integralmente a versão atual",
            arquivo.read_bytes() == conteudo_antes_falha)
