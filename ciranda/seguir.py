@@ -4,7 +4,6 @@ import ipaddress
 import json
 import os
 import re
-import shutil
 import socket
 import tempfile
 from datetime import datetime, timezone
@@ -91,6 +90,8 @@ def _baixar_corpo_https(url):
         if len(corpo) > MAX_RESPOSTA_BYTES:
             raise ValueError("Resposta excede o limite de 2 MB.")
         return corpo
+    except (OSError, http.client.HTTPException) as erro:
+        raise ValueError("Falha ao consultar a instância por HTTPS: {}".format(erro)) from erro
     finally:
         conexao.close()
 
