@@ -1,8 +1,9 @@
 """Página de consulta aos serviços públicos recebidos de outras instâncias."""
-import html
 import json
+import os
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 import streamlit as st
 
@@ -10,9 +11,11 @@ RAIZ = Path(__file__).resolve().parents[2]
 if str(RAIZ) not in sys.path:
     sys.path.insert(0, str(RAIZ))
 
-from ciranda.seguir import seguir_instancia  # noqa: E402
+from ciranda.seguir import atualizar_instancia, seguir_instancia  # noqa: E402
 
-PASTA_IMPORTADOS = RAIZ / "ciranda" / "importados"
+PASTA_IMPORTADOS = Path(os.environ.get(
+    "CIRANDA_IMPORTADOS_DIR", str(RAIZ / "ciranda" / "importados")
+))
 
 
 def carregar_importacoes(pasta=PASTA_IMPORTADOS):
@@ -31,9 +34,19 @@ def carregar_importacoes(pasta=PASTA_IMPORTADOS):
     return resultados
 
 
+def dominio_link(url):
+    """Retorna apenas o domínio de um link HTTPS válido."""
+    if not isinstance(url, str):
+        return ""
+    partes = urlparse(url)
+    if partes.scheme != "https" or not partes.hostname or partes.username or partes.password:
+        return ""
+    return partes.hostname
+
+
 st.set_page_config(page_title="Rede Ciranda", page_icon="🔗", layout="wide")
 st.title("Rede Ciranda")
-st.write("Veja serviços de apoio publicados por outras instâncias da Ciranda. As informações continuam sob responsabilidade de quem publicou.")
+st.text("Veja serviços de apoio publicados por outras instâncias da Ciranda. As informações continuam sob responsabilidade de quem publicou.")
 
 with st.form("ciranda_seguir_form"):
     endereco = st.text_input("Endereço público da outra instância", placeholder="https://exemplo.org")
@@ -60,36 +73,43 @@ else:
         instancia = dados.get("instancia", {})
         nome = instancia.get("nome") or instancia.get("identificador") or arquivo.stem
         identificador = instancia.get("identificador") or arquivo.stem
-        st.markdown("### " + str(nome))
-        st.caption("Endereço público: " + str(instancia.get("endereco_publico", "não informado")))
+        st.subheader(str(nome))
+        st.text("Endereço público: " + str(instancia.get("endereco_publico", "não informado")))
+        if st.button("Atualizar", key="atualizar_" + str(identificador)):
+            try:
+                resultado = atualizar_instancia(arquivo)
+                st.success("{} serviço(s) atualizados.".format(resultado["total_servicos"]))
+                st.rerun()
+            except (ValueError, OSError) as erro:
+                st.error("Atualização não realizada. A versão anterior foi preservada. {}".format(erro))
         servicos = dados.get("servicos", [])
         if not servicos:
-            st.caption("Esta instância ainda não publicou serviços.")
+            st.text("Esta instância ainda não publicou serviços.")
         for registro in servicos:
             servico = registro.get("servico", {})
             origem = "{} ({})".format(nome, registro.get("origem") or identificador)
             data = registro.get("data_conferencia_publicada") or "não informada"
-            st.markdown(
-                '<div style="display:inline-block;background:#eee8f7;color:#49376f;'
-                'padding:6px 12px;border-radius:18px;font-weight:700;">Informado por '
-                + html.escape(str(origem)) + ' · verificado em ' + html.escape(str(data))
-                + '</div>', unsafe_allow_html=True)
+            st.text("Informado por {} · verificado em {}".format(origem, data))
             st.warning("Esta instância não verificou este item.")
-            st.markdown("**" + str(servico.get("titulo", "Serviço sem título")) + "**")
+            st.text(servico.get("titulo", "Serviço sem título"))
             if servico.get("resumo"):
-                st.write(servico["resumo"])
+                st.text(servico["resumo"])
             if servico.get("para_quem"):
-                st.write("**Para quem:** " + servico["para_quem"])
+                st.text("Para quem: " + servico["para_quem"])
             if servico.get("como"):
-                st.write("**Como acessar:** " + servico["como"])
+                st.text("Como acessar: " + servico["como"])
             if servico.get("onde"):
-                st.write("**Onde:** " + servico["onde"])
+                st.text("Onde: " + servico["onde"])
             if servico.get("contato"):
-                st.write("**Contato:** " + servico["contato"])
+                st.text("Contato: " + servico["contato"])
             if servico.get("fonte"):
-                st.caption("Fonte informada: " + servico["fonte"])
-            if servico.get("link", "").startswith("https://"):
-                st.link_button("Abrir fonte publicada", servico["link"])
+                st.text("Fonte informada: " + servico["fonte"])
+            link = servico.get("link", "")
+            dominio = dominio_link(link)
+            if dominio:
+                st.text("Domínio do link: " + dominio)
+                st.text("Link informado por outra instância; confira antes de usar")
+                st.link_button("Abrir fonte — " + dominio, link)
             if servico.get("a_confirmar"):
-                st.caption("A publicação informa que este item ainda precisa de confirmação.")
+                st.text("A publicação informa que este item ainda precisa de confirmação.")
             st.divider()
