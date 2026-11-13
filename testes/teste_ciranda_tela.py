@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 
@@ -6,7 +5,6 @@ from streamlit.testing.v1 import AppTest
 
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
-from ciranda.paginas.rede_ciranda import carregar_importacoes
 
 
 def checar(nome, condicao):
@@ -24,6 +22,6 @@ checar("página apresenta orientação e formulário para seguir instância",
        and any(x.label == "Seguir instância" for x in at.button))
 checar("página explica que os serviços vêm de outras instâncias",
        any("responsabilidade de quem publicou" in str(x.value) for x in at.markdown))
-checar("leitor de importações vazias retorna lista vazia",
-       carregar_importacoes(RAIZ / "ciranda" / "nao_existe_importados") == [])
+checar("sem instâncias seguidas, a página informa como começar",
+       any("ainda não está seguindo outra instância" in str(x.value) for x in at.info))
 print("Teste de tela da Rede Ciranda concluído.")
