@@ -39,7 +39,7 @@ except (OSError, ValueError, json.JSONDecodeError) as erro:
     st.error("Não foi possível carregar a demonstração: {}".format(erro))
 
 pagina = st.navigation([
-    st.Page(str(RAIZ / "ciranda" / "paginas" / "rede_ciranda.py"),
+    st.Page("ciranda/paginas/rede_ciranda.py",
             title="Rede Ciranda", icon="🔗", url_path="rede_ciranda", default=True)
 ], position="hidden")
 pagina.run()
