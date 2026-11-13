@@ -27,8 +27,11 @@ def validar_manifesto(manifesto):
         if not isinstance(manifesto.get("organizacao"), str) or not manifesto["organizacao"].strip():
             erros.append("Para uma instância do tipo 'organizacao', informe 'organizacao'.")
     identificador = manifesto.get("identificador")
-    if isinstance(identificador, str) and identificador and not IDENTIFICADOR_RE.fullmatch(identificador):
-        erros.append("O identificador deve usar apenas letras minúsculas sem acento, números e hífens, sem hífen no início ou no fim.")
+    if isinstance(identificador, str) and identificador:
+        if len(identificador) > 48:
+            erros.append("O identificador deve ter no máximo 48 caracteres.")
+        if not IDENTIFICADOR_RE.fullmatch(identificador):
+            erros.append("O identificador deve usar apenas letras minúsculas sem acento, números e hífens, sem hífen no início ou no fim.")
     endereco = manifesto.get("endereco_publico")
     if isinstance(endereco, str) and endereco.strip():
         partes = urlparse(endereco.strip())
