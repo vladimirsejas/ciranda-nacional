@@ -29,7 +29,7 @@ with tempfile.TemporaryDirectory() as pasta:
         codigo = (RAIZ / "ciranda" / "app_ciranda.py").read_text(encoding="utf-8").lower()
         checar("ponto de entrada não contém dependências MISM, Gemini, chaves ou dados",
                not any(termo in codigo for termo in (
-                   "gemini", "api_key", "token", "mism", "parquet", "sqlite", "banco"
+                   "gemini", "api_key", "token", "mism", "parquet", "sqlite", "banco", "tempfile"
                )))
         checar("primeira abertura importa automaticamente a demonstração", demo.exists())
         texto = demo.read_text(encoding="utf-8")
