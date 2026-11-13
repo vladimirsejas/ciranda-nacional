@@ -58,16 +58,15 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 ### Comando 6 — fechamento
 
 - [x] `docs/CIRANDA_COMO_RODAR.md`: publicação, importação, abertura da página e comandos de teste.
-- [x] Testes novos identificados para execução:
-  - `testes/teste_ciranda_instancia.py` — **NÃO EXECUTADO**.
-  - `testes/teste_ciranda_servico.py` — **NÃO EXECUTADO**.
-  - `testes/teste_ciranda_publicar.py` — **NÃO EXECUTADO**.
-  - `testes/teste_ciranda_seguir.py` — **NÃO EXECUTADO**.
-  - `testes/teste_ciranda_tela.py` — **NÃO EXECUTADO**.
-- [x] Testes legados relacionados ao catálogo e à tela:
-  - `MISM2/algoritimos/teste_apoio.py` — **NÃO EXECUTADO**.
-  - `MISM2/dashboard/teste_apoio_tela.py` — **NÃO EXECUTADO**.
-- [ ] Pull request de `federacao` para `main`, sem merge.
+- [x] Testes novos e legados identificados para execução; todos permanecem **NÃO EXECUTADO**:
+  - `testes/teste_ciranda_instancia.py`
+  - `testes/teste_ciranda_servico.py`
+  - `testes/teste_ciranda_publicar.py`
+  - `testes/teste_ciranda_seguir.py`
+  - `testes/teste_ciranda_tela.py`
+  - `MISM2/algoritimos/teste_apoio.py`
+  - `MISM2/dashboard/teste_apoio_tela.py`
+- [x] Pull request **#1** aberto de `federacao` para `main`, sem merge: https://github.com/vladimirsejas/ciranda-nacional/pull/1
 
 ## Limitações de execução
 
