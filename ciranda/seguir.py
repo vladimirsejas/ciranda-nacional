@@ -112,7 +112,7 @@ def _ler_json_local_ou_url(origem, nome):
         conteudo = _baixar_corpo_https(url)
     try:
         return json.loads(conteudo.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as erro:
+    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as erro:
         raise ValueError("JSON inválido em '{}': {}".format(nome, erro)) from erro
 
 
@@ -147,8 +147,18 @@ def _ler_publicacao(origem):
         outbox = _ler_json_local_ou_url(base, "outbox.json")
     if not isinstance(actor, dict) or actor.get("type") != "Organization":
         raise ValueError("Perfil inválido: esperado um perfil Organization.")
-    _validar_todos_os_textos(actor, "perfil")
-    _validar_todos_os_textos(outbox, "lista de publicações")
+    if not isinstance(outbox, dict) or outbox.get("type") != "OrderedCollection":
+        raise ValueError("Lista de publicações inválida: esperado OrderedCollection.")
+    atividades = outbox.get("orderedItems")
+    if not isinstance(atividades, list):
+        raise ValueError("Lista de publicações inválida: 'orderedItems' deve ser uma lista.")
+    if len(atividades) > MAX_SERVICOS:
+        raise ValueError("A instância excedeu o limite de {} serviços.".format(MAX_SERVICOS))
+    try:
+        _validar_todos_os_textos(actor, "perfil")
+        _validar_todos_os_textos(outbox, "lista de publicações")
+    except RecursionError as erro:
+        raise ValueError("O JSON publicado possui estrutura profunda demais.") from erro
     for campo in ("id", "preferredUsername", "name", "summary", "url"):
         _validar_texto(actor.get(campo, ""), "perfil." + campo)
     identificador = actor.get("preferredUsername")
@@ -166,13 +176,6 @@ def _ler_publicacao(origem):
         host_solicitado = urlparse(str(origem)).hostname
         if endereco_perfil.hostname != host_solicitado:
             raise ValueError("O perfil publicado não corresponde ao domínio consultado.")
-    if not isinstance(outbox, dict) or outbox.get("type") != "OrderedCollection":
-        raise ValueError("Lista de publicações inválida: esperado OrderedCollection.")
-    atividades = outbox.get("orderedItems")
-    if not isinstance(atividades, list):
-        raise ValueError("Lista de publicações inválida: 'orderedItems' deve ser uma lista.")
-    if len(atividades) > MAX_SERVICOS:
-        raise ValueError("A instância excedeu o limite de {} serviços.".format(MAX_SERVICOS))
     servicos = []
     for indice, atividade in enumerate(atividades, start=1):
         if not isinstance(atividade, dict) or atividade.get("type") != "Create":
@@ -257,7 +260,9 @@ def atualizar_instancia(arquivo_importado, pasta_historico=None, endereco=None):
         anterior = json.loads(conteudo_anterior.decode("utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as erro:
         raise ValueError("Não foi possível ler a importação atual: {}".format(erro)) from erro
-    instancia_anterior = anterior.get("instancia", {}) if isinstance(anterior, dict) else {}
+    if not isinstance(anterior, dict) or not isinstance(anterior.get("instancia"), dict):
+        raise ValueError("Arquivo atual não contém um manifesto local de instância válido.")
+    instancia_anterior = anterior["instancia"]
     identificador_anterior = instancia_anterior.get("identificador")
     endereco = endereco or instancia_anterior.get("endereco_publico")
     if not identificador_anterior or not endereco:
