@@ -14,16 +14,25 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 
 ## Execução
 
-### Comandos 1 e 2 — identidade e serviço federável
+### Comando 1 — identidade da instância
 
-- [x] Manifesto, validação e exemplo de instância.
-- [x] Conversor de catálogo com lista fechada de campos permitidos.
-- [x] Testes `testes/teste_ciranda_instancia.py` e `testes/teste_ciranda_servico.py`.
-- Testes: **NÃO EXECUTADOS**.
+- [x] Branch `federacao` criado a partir de `main`.
+- [x] `ciranda/instancia.py`: manifesto, carregamento e validação em português.
+- [x] `ciranda/instancia.exemplo.json`: exemplo de Rio Claro.
+- [x] `testes/teste_ciranda_instancia.py`.
+- Teste: **NÃO EXECUTADO**.
+
+### Comando 2 — serviço federável
+
+- [x] `ciranda/servico.py`: documento JSON com lista fechada de campos permitidos, origem e data de conferência.
+- [x] Campos extras do item de origem são descartados; `confirmar` vira `a_confirmar` booleano.
+- [x] `testes/teste_ciranda_servico.py`: cobre todos os itens reais de `ITENS`, campos permitidos, marca, data, JSON e descarte de campo extra.
+- Teste: **NÃO EXECUTADO**.
 
 ### Comando 3 — publicar
 
-- [x] `ciranda/publicar.py`: WebFinger, perfil `actor.json` e `outbox.json` estáticos.
+- [x] `ciranda/publicar.py`: gera WebFinger, perfil `actor.json` e `outbox.json` estáticos.
+- [x] Publicação somente de leitura; não há inbox, assinatura ou chave.
 - [x] Instância e catálogo fictícios em `ciranda/demonstracao/instancia_demo/`.
 - [x] `testes/teste_ciranda_publicar.py`.
 - Teste: **NÃO EXECUTADO**.
@@ -42,14 +51,22 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 
 - [x] Página nova `ciranda/paginas/rede_ciranda.py`, mantida dentro de `ciranda/` conforme a regra de localização de todo código novo.
 - [x] `app.py` editado para incluir a página Streamlit `Rede Ciranda` em `st.Page` e na navegação. Esta é a alteração existente indispensável para registrar a nova página; as páginas antigas não foram editadas.
-- [x] Formulário para seguir endereço HTTPS, lista de instâncias importadas, selo com origem/data declaradas e aviso explícito de que a instância local não verificou o item.
+- [x] Formulário para seguir endereço HTTPS, lista de instâncias importadas, selo com nome/identificador de origem e data declarada, e aviso explícito de que a instância local não verificou o item.
 - [x] `testes/teste_ciranda_tela.py` com Streamlit AppTest.
 - Teste de tela: **NÃO EXECUTADO**.
 
 ### Comando 6 — fechamento
 
-- [ ] Guia de execução.
-- [ ] Rodada final de testes.
+- [x] `docs/CIRANDA_COMO_RODAR.md`: publicação, importação, abertura da página e comandos de teste.
+- [x] Testes novos identificados para execução:
+  - `testes/teste_ciranda_instancia.py` — **NÃO EXECUTADO**.
+  - `testes/teste_ciranda_servico.py` — **NÃO EXECUTADO**.
+  - `testes/teste_ciranda_publicar.py` — **NÃO EXECUTADO**.
+  - `testes/teste_ciranda_seguir.py` — **NÃO EXECUTADO**.
+  - `testes/teste_ciranda_tela.py` — **NÃO EXECUTADO**.
+- [x] Testes legados relacionados ao catálogo e à tela:
+  - `MISM2/algoritimos/teste_apoio.py` — **NÃO EXECUTADO**.
+  - `MISM2/dashboard/teste_apoio_tela.py` — **NÃO EXECUTADO**.
 - [ ] Pull request de `federacao` para `main`, sem merge.
 
 ## Limitações de execução
