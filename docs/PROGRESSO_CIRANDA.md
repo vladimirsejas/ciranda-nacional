@@ -30,4 +30,12 @@ Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração 
 - [x] `testes/teste_ciranda_servico.py`: cobre todos os itens reais de `ITENS`, lista permitida, marca, data, JSON e descarte de campo extra.
 - Teste: **NÃO EXECUTADO** (o conector GitHub não executa Python).
 
-Dúvidas/decisões: campos textuais ausentes são publicados como texto vazio. O campo interno `levar`, os campos de navegação, metadados de integração e quaisquer campos não listados não são exportados.
+### Comando 3 — publicar
+
+- [x] `ciranda/publicar.py`: gera WebFinger, perfil `actor.json` e `outbox.json` estáticos.
+- [x] Publicação somente de leitura; não há inbox, assinatura ou chave.
+- [x] `ciranda/demonstracao/instancia_demo/`: manifesto e catálogo fictícios; todos os títulos dos itens contêm DEMONSTRAÇÃO.
+- [x] `testes/teste_ciranda_publicar.py`: valida JSON, perfil, publicações, lista de campos e ausência de chaves proibidas.
+- Teste: **NÃO EXECUTADO** (o conector GitHub não executa Python).
+
+Dúvidas/decisões: o formato usa ActivityStreams como estrutura de envelope. As propriedades `ciranda:*` e o objeto `Note` contendo `ciranda:servico` são extensões locais **A VERIFICAR**; não se afirma compatibilidade com outras plataformas. O WebFinger publicado é um arquivo estático, e a hospedagem deverá expô-lo no caminho `.well-known/webfinger`.
