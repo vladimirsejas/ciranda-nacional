@@ -122,6 +122,19 @@ def _validar_texto(valor, campo):
         raise ValueError("O campo '{}' excede o limite de {} caracteres.".format(campo, MAX_CAMPO_TEXTO))
 
 
+def _validar_todos_os_textos(valor, caminho="documento"):
+    """Aplica o limite de texto a todos os valores e chaves de um JSON recebido."""
+    if isinstance(valor, str):
+        _validar_texto(valor, caminho)
+    elif isinstance(valor, dict):
+        for chave, item in valor.items():
+            _validar_texto(chave, caminho + ".chave")
+            _validar_todos_os_textos(item, caminho + "." + chave)
+    elif isinstance(valor, list):
+        for indice, item in enumerate(valor):
+            _validar_todos_os_textos(item, "{}[{}]".format(caminho, indice))
+
+
 def _ler_publicacao(origem):
     local = Path(str(origem)).is_dir()
     if local:
@@ -133,6 +146,8 @@ def _ler_publicacao(origem):
         outbox = _ler_json_local_ou_url(base, "outbox.json")
     if not isinstance(actor, dict) or actor.get("type") != "Organization":
         raise ValueError("Perfil inválido: esperado um perfil Organization.")
+    _validar_todos_os_textos(actor, "perfil")
+    _validar_todos_os_textos(outbox, "lista de publicações")
     for campo in ("id", "preferredUsername", "name", "summary", "url"):
         _validar_texto(actor.get(campo, ""), "perfil." + campo)
     identificador = actor.get("preferredUsername")
