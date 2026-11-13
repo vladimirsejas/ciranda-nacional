@@ -227,7 +227,7 @@ def seguir_instancia(endereco, pasta_importados="ciranda/importados"):
     return {"arquivo": str(arquivo), "identificador": identificador, "total_servicos": len(servicos)}
 
 
-def atualizar_instancia(arquivo_importado, pasta_historico=None):
+def atualizar_instancia(arquivo_importado, pasta_historico=None, endereco=None):
     """Atualiza uma instância seguida; valida antes e mantém cópia histórica antes da troca atômica."""
     arquivo = Path(arquivo_importado)
     try:
@@ -237,7 +237,7 @@ def atualizar_instancia(arquivo_importado, pasta_historico=None):
         raise ValueError("Não foi possível ler a importação atual: {}".format(erro)) from erro
     instancia_anterior = anterior.get("instancia", {}) if isinstance(anterior, dict) else {}
     identificador_anterior = instancia_anterior.get("identificador")
-    endereco = instancia_anterior.get("endereco_publico")
+    endereco = endereco or instancia_anterior.get("endereco_publico")
     if not identificador_anterior or not endereco:
         raise ValueError("Arquivo atual não contém endereço e identificador da instância seguida.")
     actor, servicos = _ler_publicacao(endereco)
