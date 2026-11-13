@@ -37,8 +37,8 @@ def _resolver_endereco_publico(url):
         pass
     else:
         raise ValueError("Endereços IP numéricos não são permitidos; use um nome público.")
-    porta = partes.port or 443
     try:
+        porta = partes.port or 443
         respostas = socket.getaddrinfo(host, porta, type=socket.SOCK_STREAM)
     except OSError as erro:
         raise ValueError("Não foi possível resolver o endereço público: {}".format(erro)) from erro
@@ -63,11 +63,6 @@ def _baixar_corpo_https(url):
     host, porta, ip_publico = _resolver_endereco_publico(url)
     partes = urlparse(url)
     caminho = partes.path or "/"
-    if not caminho.endswith(("/", ".json", "webfinger")):
-        caminho += "/"
-    caminho += "" if caminho.endswith("webfinger") else ""
-    if partes.query:
-        caminho += "?" + partes.query
     conexao = http.client.HTTPSConnection(host, port=porta, timeout=15)
     # Evita uma segunda resolução DNS: a conexão usa exatamente o IP público validado acima.
     conexao._create_connection = lambda _address, timeout, source_address: socket.create_connection(
@@ -84,11 +79,11 @@ def _baixar_corpo_https(url):
         tamanho = resposta.getheader("Content-Length")
         if tamanho:
             try:
-                if int(tamanho) > MAX_RESPOSTA_BYTES:
-                    raise ValueError("Resposta excede o limite de 2 MB.")
-            except ValueError as erro:
-                if "limite" in str(erro):
-                    raise
+                tamanho = int(tamanho)
+            except (TypeError, ValueError) as erro:
+                raise ValueError("A resposta informou um tamanho inválido.") from erro
+            if tamanho < 0 or tamanho > MAX_RESPOSTA_BYTES:
+                raise ValueError("Resposta excede o limite de 2 MB ou informa tamanho inválido.")
         corpo = resposta.read(MAX_RESPOSTA_BYTES + 1)
         if len(corpo) > MAX_RESPOSTA_BYTES:
             raise ValueError("Resposta excede o limite de 2 MB.")
@@ -118,7 +113,9 @@ def _ler_json_local_ou_url(origem, nome):
 
 
 def _validar_texto(valor, campo):
-    if isinstance(valor, str) and len(valor) > MAX_CAMPO_TEXTO:
+    if not isinstance(valor, str):
+        raise ValueError("O campo '{}' deve conter texto.".format(campo))
+    if len(valor) > MAX_CAMPO_TEXTO:
         raise ValueError("O campo '{}' excede o limite de {} caracteres.".format(campo, MAX_CAMPO_TEXTO))
 
 
@@ -164,9 +161,11 @@ def _ler_publicacao(origem):
         if set(documento) - set(CAMPOS_PERMITIDOS):
             raise ValueError("Publicação {} contém campos não permitidos.".format(indice))
         for campo, valor in documento.items():
-            _validar_texto(valor, "servico.{}".format(campo))
-        if not isinstance(documento.get("a_confirmar"), bool):
-            raise ValueError("Publicação {} tem marca a_confirmar inválida.".format(indice))
+            if campo == "a_confirmar":
+                if not isinstance(valor, bool):
+                    raise ValueError("Publicação {} tem marca a_confirmar inválida.".format(indice))
+            else:
+                _validar_texto(valor, "servico.{}".format(campo))
         if documento.get("origem_instancia") != identificador:
             raise ValueError("Publicação {} informa origem diferente da instância publicadora.".format(indice))
         if not documento.get("id") or not documento.get("data_conferencia"):
