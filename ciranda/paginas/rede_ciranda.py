@@ -44,8 +44,12 @@ def dominio_link(url):
     return partes.hostname
 
 
-st.set_page_config(page_title="Rede Ciranda", page_icon="🔗", layout="wide")
-st.title("Rede Ciranda")
+st.set_page_config(page_title="Ciranda", page_icon="🔗", layout="wide")
+st.header("Rede Ciranda")
+try:  # o botão leva ao Apoio quando a página roda dentro do app.py; isolada, não há para onde ir
+    st.page_link("MISM2/dashboard/pages/apoio.py", label="Apoio à mulher: guia de serviços com a Lia", icon="🩷")
+except Exception:
+    pass
 st.text("Veja serviços de apoio publicados por outras instâncias da Ciranda. As informações continuam sob responsabilidade de quem publicou.")
 
 with st.form("ciranda_seguir_form"):

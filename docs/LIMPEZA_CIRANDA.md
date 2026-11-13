@@ -160,3 +160,55 @@ Resultado do grep nos arquivos vivos (`.py`, `.toml`, `.txt`, `.yml`, `.json`, f
 
 Testes depois deste passo: **27 de 28 passaram** (mesma única falha, `teste_mapa_lia.py`).
 
+
+## Entrada única (`app.py`)
+
+- `app.py` virou o site da Ciranda: título visível **Ciranda**, página inicial **Rede Ciranda** (com a importação única da demonstração fictícia e a faixa de protótipo) e página **Apoio à mulher** (botão na Rede Ciranda; o "Início" do Apoio volta ao `app.py`).
+- `ciranda/app_ciranda.py` removido; `testes/teste_ciranda_app.py` e `docs/CIRANDA_COMO_RODAR.md` agora usam `app.py` (inclusive no Streamlit Community Cloud: *Main file path* = `app.py`). `docs/PROGRESSO_CIRANDA.md` é histórico e ainda cita o arquivo antigo.
+- Marcas visíveis do Apoio: "MISM · Apoio à mulher" → "Ciranda · Apoio à mulher"; "pesquisadora do MISM" → "pesquisadora da Ciranda".
+- `CLAUDE.md` curto criado na raiz (o que é, desenho decidido, regras, estrutura, como rodar os testes).
+
+## Verificação final
+
+- `compile()` em todos os 51 `.py` e `python -m compileall`: sem erro.
+- Instalação em ambiente virtual limpo só com o novo `requirements.txt` (streamlit 1.64.0, pandas 3.0.1, numpy 2.5.3, python-dotenv 1.2.2, google-genai 2.24.0): instala e `teste_ciranda_app.py`, `teste_apoio_tela.py` e `teste_apoio_busca.py` passam nele.
+- `AppTest` de `app.py`: abre sem exceção na página inicial (título "Ciranda", cabeçalho "Rede Ciranda") e, via `switch_page`, no Apoio à mulher (`testes/teste_ciranda_app.py`).
+- Todos os testes restantes (28): **27 passaram, 1 falhou** (`MISM2/algoritimos/teste_mapa_lia.py`, "é texto fixo: a IA não reescreve", já falhava na linha de base; não foi alterada a lógica dele, só o link removido).
+
+| Teste | Resultado | s |
+|---|---|---|
+| `MISM2/algoritimos/teste_alcance.py` | passou | 1.1 |
+| `MISM2/algoritimos/teste_apoio.py` | passou | 0.7 |
+| `MISM2/algoritimos/teste_apoio_busca.py` | passou | 3.1 |
+| `MISM2/algoritimos/teste_apoio_cancer.py` | passou | 4.2 |
+| `MISM2/algoritimos/teste_assistente.py` | passou | 25.3 |
+| `MISM2/algoritimos/teste_comparar.py` | passou | 0.7 |
+| `MISM2/algoritimos/teste_conferir_links.py` | passou | 0.8 |
+| `MISM2/algoritimos/teste_conversa.py` | passou | 1.2 |
+| `MISM2/algoritimos/teste_conversa_apoio.py` | passou | 0.8 |
+| `MISM2/algoritimos/teste_entendimento.py` | passou | 1.9 |
+| `MISM2/algoritimos/teste_fluxo.py` | passou | 1.0 |
+| `MISM2/algoritimos/teste_glossario.py` | passou | 0.9 |
+| `MISM2/algoritimos/teste_hospital.py` | passou | 1.1 |
+| `MISM2/algoritimos/teste_inteligencia.py` | passou | 2.1 |
+| `MISM2/algoritimos/teste_lia.py` | passou | 3.4 |
+| `MISM2/algoritimos/teste_mapa_lia.py` | FALHOU | 0.7 |
+| `MISM2/algoritimos/teste_previsao.py` | passou | 0.8 |
+| `MISM2/algoritimos/teste_resposta_livre.py` | passou | 0.6 |
+| `MISM2/algoritimos/teste_sobre_mism.py` | passou | 0.9 |
+| `MISM2/dashboard/teste_apoio_tela.py` | passou | 71.2 |
+| `MISM2/dashboard/teste_conversa_apoio_tela.py` | passou | 2.9 |
+| `testes/teste_ciranda_app.py` | passou | 2.5 |
+| `testes/teste_ciranda_instancia.py` | passou | 0.1 |
+| `testes/teste_ciranda_publicar.py` | passou | 0.1 |
+| `testes/teste_ciranda_seguir.py` | passou | 0.1 |
+| `testes/teste_ciranda_seguranca.py` | passou | 0.1 |
+| `testes/teste_ciranda_servico.py` | passou | 0.8 |
+| `testes/teste_ciranda_tela.py` | passou | 1.0 |
+
+## Balanço
+
+- Testes: **58 de 64** antes (6 falhas: `teste_painel`, `teste_painel_banco_real`, `teste_perguntas_humano`, `teste_estudo_rio_claro`, `teste_mapa_parquet`, `teste_mapa_lia`) → **27 de 28** depois (a falha restante é a `teste_mapa_lia`). Os 36 testes que saíram testavam o que foi removido; 5 das 6 falhas antigas saíram junto com seus alvos.
+- Arquivos versionados: 210 antes; 100 removidos (≈1,17 MB de conteúdo), 26 movidos para `docs/herdado/`.
+- Mantidos mesmo parecendo desnecessários: `conversa.py` (usado por `teste_entendimento`), `inteligencia.py`/`assistente.py`/`mism1_conhecimento.py`/`ia_linguagem.py` (importados pelo Apoio), `MISM 1/dados/referencia/*.csv` e `MISM2/analises/base_preditiva_2013_2025.csv` (lidos por caminho), `conferir_links.py`, os `gabarito_*.json`, `MISM2/.gitignore`/`.gitattributes`/`.streamlit/`.
+- Observação: o `.env`/Gemini do Apoio continua opcional e desligado; como a ponte `st.secrets` saiu, na hospedagem a chave só vale se for definida como variável de ambiente.

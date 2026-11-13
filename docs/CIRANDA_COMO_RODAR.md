@@ -1,14 +1,14 @@
 # Como executar a Ciranda
 
-Os comandos abaixo partem da raiz do repositório. O protótipo independente usa apenas os módulos da Ciranda; não precisa iniciar o painel MISM, carregar dados Parquet, abrir banco de dados nem configurar chaves.
+Os comandos abaixo partem da raiz do repositório. O site é um arquivo só, `app.py`, com a página inicial **Rede Ciranda** e a página **Apoio à mulher** (a Lia e a busca). Não precisa de banco de dados, dados Parquet nem chaves.
 
-## 1. Abrir a demonstração independente
+## 1. Abrir o site
 
 Instale as dependências do projeto a partir do `requirements.txt` da raiz e execute:
 
 ```powershell
 pip install -r requirements.txt
-streamlit run ciranda/app_ciranda.py
+streamlit run app.py
 ```
 
 Na primeira abertura, a aplicação importa automaticamente a instância fictícia localizada em `ciranda/demonstracao/instancia_demo/`. A importação é gravada em `ciranda/importados/`, pasta ignorada pelo Git, e não substitui um arquivo de demonstração que já exista. A faixa no topo informa que os serviços são fictícios.
@@ -18,15 +18,15 @@ Na primeira abertura, a aplicação importa automaticamente a instância fictíc
 1. Acesse https://share.streamlit.io/ e entre com sua conta GitHub.
 2. Selecione **Create app** e escolha o repositório `vladimirsejas/ciranda-nacional`.
 3. Selecione a branch `federacao`.
-4. Em **Main file path**, informe exatamente `ciranda/app_ciranda.py`.
+4. Em **Main file path**, informe exatamente `app.py`.
 5. Em **Advanced settings**, mantenha o arquivo de dependências `requirements.txt` da raiz do repositório (não crie um segundo arquivo de dependências).
 6. Publique o aplicativo.
 
-A Ciranda independente não requer Secrets, Gemini, token, chave de API, dados Parquet ou banco de dados. Não cadastre credenciais em **Secrets** para executar este protótipo. O repositório é privado; a implantação depende de o Streamlit Community Cloud ter acesso autorizado ao repositório.
+A Ciranda não requer Secrets, token, chave de API, dados Parquet ou banco de dados. O Gemini da busca do Apoio é opcional e vem desligado: sem a variável de ambiente `GEMINI_API_KEY` nada é enviado à rede (e os Secrets do Streamlit já não são copiados para o ambiente). Não cadastre credenciais para executar este protótipo. O repositório é privado; a implantação depende de o Streamlit Community Cloud ter acesso autorizado ao repositório.
 
 ## 3. Gerar os arquivos públicos de uma instância
 
-A publicação usa o manifesto da instância e a lista `ITENS` do catálogo de apoio existente no MISM2. Este comando de publicação é uma ferramenta separada; não é necessário para abrir a demonstração independente:
+A publicação usa o manifesto da instância e a lista `ITENS` do catálogo de apoio existente no MISM2. Este comando de publicação é uma ferramenta separada; não é necessário para abrir o site:
 
 ```powershell
 @'
@@ -78,7 +78,7 @@ Textos recebidos são apresentados sem interpretação de Markdown ou HTML. Link
 
 ## 5. Testes
 
-Execute os testes novos individualmente:
+Cada teste é um script; rode-os da raiz do repositório (os do Apoio abrem a página de verdade com o `AppTest` do Streamlit e levam alguns minutos).
 
 ```powershell
 python testes/teste_ciranda_instancia.py
@@ -88,13 +88,9 @@ python testes/teste_ciranda_seguir.py
 python testes/teste_ciranda_seguranca.py
 python testes/teste_ciranda_tela.py
 python testes/teste_ciranda_app.py
-```
-
-Os testes legados relacionados ao catálogo e à tela de Apoio podem ser executados com:
-
-```powershell
-python MISM2/algoritimos/teste_apoio.py
 python MISM2/dashboard/teste_apoio_tela.py
 ```
+
+Os testes da busca, da Lia e do catálogo (`MISM2/algoritimos/teste_*.py`) devem ser executados de dentro de `MISM2/algoritimos`. O `CLAUDE.md` da raiz lista o comando de todos.
 
 O formato de publicação contém extensões locais identificadas como **A VERIFICAR**. A geração e a leitura estática não demonstram, por si só, compatibilidade com outras implementações ActivityPub.
