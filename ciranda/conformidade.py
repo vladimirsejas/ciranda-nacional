@@ -3,7 +3,6 @@ import argparse
 import json
 import re
 import sys
-from datetime import date
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -15,6 +14,7 @@ from ciranda.seguir import (
     MAX_SERVICOS,
     _baixar_corpo_https,
     _ler_json_local_ou_url,
+    _validar_todos_os_textos,
 )
 
 CAMPOS_OBRIGATORIOS_IMPORTACAO = ("id", "data_conferencia", "origem_instancia")
@@ -34,13 +34,6 @@ def _ler_descoberta(origem):
 def _data_reconhecida(valor):
     if not isinstance(valor, str) or not valor.strip():
         return False
-    for formato in ("%d/%m/%Y", "%Y-%m-%d"):
-        try:
-            date.strptime(valor.strip(), formato)
-            return True
-        except (ValueError, AttributeError):
-            pass
-    # date.strptime não existe em algumas versões suportadas; tenta datetime.
     from datetime import datetime
     for formato in ("%d/%m/%Y", "%Y-%m-%d"):
         try:
@@ -141,7 +134,9 @@ def verificar_instancia(endereco_ou_pasta):
         if Path(origem).is_dir():
             perfil_corresponde = https_ok and href == endereco_perfil
         else:
-            perfil_corresponde = https_ok and urlparse(href).hostname == urlparse(origem).hostname and href == endereco_perfil
+            host_solicitado = urlparse(origem).hostname
+            perfil_corresponde = (https_ok and href == endereco_perfil
+                                  and partes.hostname == host_solicitado)
         registrar("descoberta corresponde ao perfil", "OK" if perfil_corresponde else "ERRO",
                   "O href da descoberta corresponde ao id do perfil." if perfil_corresponde else "O href da descoberta não corresponde ao perfil publicado.")
     except (OSError, ValueError, UnicodeDecodeError, json.JSONDecodeError, RecursionError) as erro:
@@ -165,6 +160,13 @@ def verificar_instancia(endereco_ou_pasta):
     except (OSError, ValueError, UnicodeDecodeError, json.JSONDecodeError, RecursionError) as erro:
         registrar("leitura da lista de publicações", "ERRO", str(erro))
         return {"origem": origem, "verificacoes": verificacoes}
+
+    textos_acima_limite = []
+    try:
+        _validar_todos_os_textos(actor, "perfil")
+        _validar_todos_os_textos(outbox, "lista de publicações")
+    except (ValueError, RecursionError) as erro:
+        textos_acima_limite.append(str(erro))
 
     atividade_erros = []
     documento_erros = []
@@ -209,14 +211,15 @@ def verificar_instancia(endereco_ou_pasta):
     registrar("formato da data de conferência", "AVISO" if data_avisos else "OK",
               " ".join(data_avisos) if data_avisos else "Datas preenchidas seguem DD/MM/AAAA ou AAAA-MM-DD; o código de importação não impõe formato.")
 
-    privacidade = _achados_privacidade({"perfil": actor, "publicacoes": docs})
+    privacidade = _achados_privacidade({"perfil": actor, "publicacoes": outbox})
     registrar("checagem heurística de privacidade", "AVISO" if privacidade else "OK",
               " ".join(privacidade) if privacidade else "Nenhum CPF válido ou sequência de 15 dígitos foi detectado pela heurística; isso não garante ausência de dados pessoais.")
 
     # A leitura comum aplica o limite de 2 MiB a cada arquivo; a leitura dos textos
     # acima aplica o limite por campo. Aqui a verificação registra os limites em conjunto.
-    registrar("limites de tamanho", "OK",
-              "Arquivos/respostas limitados a 2 MiB e textos a {} caracteres, conforme leitura compartilhada com seguir.py.".format(MAX_CAMPO_TEXTO))
+    registrar("limites de tamanho", "ERRO" if textos_acima_limite else "OK",
+              " ".join(textos_acima_limite) if textos_acima_limite else
+              "Arquivos/respostas limitados a 2 MiB, até {} serviços e textos a {} caracteres, conforme seguir.py.".format(MAX_SERVICOS, MAX_CAMPO_TEXTO))
     return {"origem": origem, "verificacoes": verificacoes}
 
 
