@@ -1,0 +1,4 @@
+{
+  "caso": "cpf_no_texto",
+  "descricao": "Texto contém CPF de dígitos verificadores válidos; esperado AVISO heurístico."
+}
