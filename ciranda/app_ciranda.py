@@ -38,8 +38,9 @@ try:
 except (OSError, ValueError, json.JSONDecodeError) as erro:
     st.error("Não foi possível carregar a demonstração: {}".format(erro))
 
+# st.Page resolve caminhos relativos à pasta do script de entrada.
 pagina = st.navigation([
-    st.Page("ciranda/paginas/rede_ciranda.py",
+    st.Page("paginas/rede_ciranda.py",
             title="Rede Ciranda", icon="🔗", url_path="rede_ciranda", default=True)
 ], position="hidden")
 pagina.run()
