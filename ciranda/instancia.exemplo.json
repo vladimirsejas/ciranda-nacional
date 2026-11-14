@@ -1,0 +1,8 @@
+{
+  "nome": "Ciranda Rio Claro (demonstração)",
+  "tipo": "cidade",
+  "municipio": "Rio Claro - SP",
+  "endereco_publico": "https://ciranda.exemplo.org",
+  "contato_publico": "contato@ciranda.exemplo.org",
+  "identificador": "rio-claro"
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "demo-acolhimento",
+    "titulo": "DEMONSTRAÇÃO — Serviço fictício de acolhimento",
+    "resumo": "DEMONSTRAÇÃO — conteúdo fictício, sem serviço real.",
+    "para_quem": "DEMONSTRAÇÃO — público fictício.",
+    "como": "DEMONSTRAÇÃO — instrução fictícia.",
+    "contato": "DEMONSTRAÇÃO — contato inexistente.",
+    "fonte": "DEMONSTRAÇÃO — fonte fictícia.",
+    "link": "https://exemplo.invalid/demo",
+    "onde": "DEMONSTRAÇÃO — local fictício.",
+    "conferido": "DEMONSTRAÇÃO — data fictícia",
+    "confirmar": "DEMONSTRAÇÃO — confirmar; dado fictício."
+  },
+  {
+    "id": "demo-orientacao",
+    "titulo": "DEMONSTRAÇÃO — Serviço fictício de orientação",
+    "resumo": "DEMONSTRAÇÃO — segundo item fictício, não utilizar.",
+    "para_quem": "DEMONSTRAÇÃO — público fictício.",
+    "como": "DEMONSTRAÇÃO — instrução fictícia.",
+    "contato": "DEMONSTRAÇÃO — contato inexistente.",
+    "fonte": "DEMONSTRAÇÃO — fonte fictícia.",
+    "link": "https://exemplo.invalid/orientacao",
+    "onde": "DEMONSTRAÇÃO — local fictício.",
+    "conferido": "DEMONSTRAÇÃO — data fictícia",
+    "confirmar": null
+  }
+]

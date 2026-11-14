@@ -1,0 +1,61 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    {"ciranda": "https://ciranda.invalid/ns#"}
+  ],
+  "id": "https://instancia-a.exemplo.invalid/outbox.json",
+  "type": "OrderedCollection",
+  "totalItems": 2,
+  "orderedItems": [
+    {
+      "id": "https://instancia-a.exemplo.invalid/actor.json#publicacao-demo-acolhimento",
+      "type": "Create",
+      "actor": "https://instancia-a.exemplo.invalid/actor.json",
+      "object": {
+        "id": "https://instancia-a.exemplo.invalid/actor.json#servico-demo-acolhimento",
+        "type": "Note",
+        "name": "DEMONSTRAÇÃO — Serviço fictício de acolhimento",
+        "summary": "DEMONSTRAÇÃO — conteúdo fictício, sem serviço real.",
+        "ciranda:servico": {
+          "id": "demo-acolhimento",
+          "titulo": "DEMONSTRAÇÃO — Serviço fictício de acolhimento",
+          "resumo": "DEMONSTRAÇÃO — conteúdo fictício, sem serviço real.",
+          "para_quem": "DEMONSTRAÇÃO — público fictício.",
+          "como": "DEMONSTRAÇÃO — instrução fictícia.",
+          "contato": "DEMONSTRAÇÃO — contato inexistente.",
+          "fonte": "DEMONSTRAÇÃO — fonte fictícia.",
+          "link": "https://exemplo.invalid/demo",
+          "onde": "DEMONSTRAÇÃO — local fictício.",
+          "data_conferencia": "DEMONSTRAÇÃO — data fictícia",
+          "a_confirmar": true,
+          "origem_instancia": "instancia-a-demo"
+        }
+      }
+    },
+    {
+      "id": "https://instancia-a.exemplo.invalid/actor.json#publicacao-demo-orientacao",
+      "type": "Create",
+      "actor": "https://instancia-a.exemplo.invalid/actor.json",
+      "object": {
+        "id": "https://instancia-a.exemplo.invalid/actor.json#servico-demo-orientacao",
+        "type": "Note",
+        "name": "DEMONSTRAÇÃO — Serviço fictício de orientação",
+        "summary": "DEMONSTRAÇÃO — segundo item fictício, não utilizar.",
+        "ciranda:servico": {
+          "id": "demo-orientacao",
+          "titulo": "DEMONSTRAÇÃO — Serviço fictício de orientação",
+          "resumo": "DEMONSTRAÇÃO — segundo item fictício, não utilizar.",
+          "para_quem": "DEMONSTRAÇÃO — público fictício.",
+          "como": "DEMONSTRAÇÃO — instrução fictícia.",
+          "contato": "DEMONSTRAÇÃO — contato inexistente.",
+          "fonte": "DEMONSTRAÇÃO — fonte fictícia.",
+          "link": "https://exemplo.invalid/orientacao",
+          "onde": "DEMONSTRAÇÃO — local fictício.",
+          "data_conferencia": "DEMONSTRAÇÃO — data fictícia",
+          "a_confirmar": false,
+          "origem_instancia": "instancia-a-demo"
+        }
+      }
+    }
+  ]
+}

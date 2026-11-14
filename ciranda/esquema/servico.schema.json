@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ciranda.invalid/esquema/servico.schema.json",
+  "title": "Documento público de serviço Ciranda",
+  "description": "Forma completa produzida por ciranda.servico.criar_documento_servico. A importação atual também aceita documentos parciais, mas exige id, data_conferencia e origem_instancia.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "maxLength": 4000, "description": "Identificador do item no catálogo de origem."},
+    "titulo": {"type": "string", "maxLength": 4000, "description": "Título público do serviço."},
+    "resumo": {"type": "string", "maxLength": 4000, "description": "Resumo público."},
+    "para_quem": {"type": "string", "maxLength": 4000, "description": "Público a que o item se destina."},
+    "como": {"type": "string", "maxLength": 4000, "description": "Orientação de acesso."},
+    "contato": {"type": "string", "maxLength": 4000, "description": "Contato público."},
+    "fonte": {"type": "string", "maxLength": 4000, "description": "Fonte informada."},
+    "link": {"type": "string", "maxLength": 4000, "description": "Link informado."},
+    "onde": {"type": "string", "maxLength": 4000, "description": "Localização ou abrangência."},
+    "data_conferencia": {"type": "string", "maxLength": 4000, "description": "Data registrada pela instância publicadora."},
+    "a_confirmar": {"type": "boolean", "description": "Marca derivada do campo confirmar do catálogo."},
+    "origem_instancia": {"type": "string", "maxLength": 4000, "description": "Identificador da instância publicadora."}
+  },
+  "required": [
+    "id", "titulo", "resumo", "para_quem", "como", "contato",
+    "fonte", "link", "onde", "data_conferencia", "a_confirmar",
+    "origem_instancia"
+  ]
+}

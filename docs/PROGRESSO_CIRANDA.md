@@ -1,0 +1,87 @@
+# Progresso da Ciranda
+
+Branch de trabalho: `federacao`, criada a partir de `main`. Nenhuma alteração é feita diretamente em `main`.
+
+## Regras de segurança e escopo
+
+- Repositório exclusivo: `vladimirsejas/ciranda-nacional`.
+- MISM, MISM2 independente e MISM3 permanecem intocados.
+- Dados federados: somente catálogo público de serviços de apoio, derivado de `MISM2/algoritimos/apoio.py` (`ITENS`).
+- Não federar pessoas, dados pessoais ou internações individuais.
+- Serviço externo sempre conserva origem e data de conferência declaradas pela instância publicadora; nunca é apresentado como verificado localmente.
+- Código novo da Ciranda fica em `ciranda/`. Nenhum arquivo local ou cópia é criado no computador do usuário.
+- Não foi escolhida licença.
+
+## Comandos 1 a 6 — implementação inicial
+
+- [x] Manifesto, validação, conversor de catálogo, publicação estática, importação isolada, página Rede Ciranda e guia de execução.
+- [x] Demonstração fictícia e testes de unidade/tela criados.
+- [x] PR #1 aberto para `main`, sem merge.
+- Testes novos e legados da etapa inicial: **NÃO EXECUTADOS** (ambiente de trabalho pelo conector GitHub sem execução Python/Streamlit).
+
+## Comando 7 — ponto de entrada independente
+
+- [x] `ciranda/app_ciranda.py`: ponto de entrada Streamlit próprio, ajusta o caminho para a raiz e abre a página Rede Ciranda.
+- [x] Não importa módulos do MISM, nem exige banco, Parquet, dados ou chaves; não contém referências a Gemini.
+- [x] Perfil e outbox estáticos adicionados à pasta da demonstração; na primeira abertura importa diretamente de `ciranda/demonstracao/instancia_demo/` para `ciranda/importados/`, sem pasta temporária e sem sobrescrever arquivo existente.
+- [x] Faixa superior: “Protótipo de pesquisa. Os serviços exibidos são fictícios, de demonstração.”
+- [x] `testes/teste_ciranda_app.py`: AppTest do ponto de entrada, demonstração automática, não sobrescrita e isolamento.
+- [x] `docs/CIRANDA_COMO_RODAR.md`: comando `streamlit run ciranda/app_ciranda.py` e instruções de implantação Community Cloud (repositório, branch, arquivo principal e requirements da raiz).
+- Teste `testes/teste_ciranda_app.py`: **NÃO EXECUTADO**.
+
+## Comando 8 — segurança e atualização
+
+- [x] Respostas remotas limitadas a 2 MB por arquivo.
+- [x] Máximo de 500 serviços por publicação.
+- [x] Todos os textos do perfil e do envelope, além dos campos de serviço, limitados a 4.000 caracteres; tipos inesperados são rejeitados.
+- [x] Recusa localhost, IPs numéricos e DNS que resolva para IP não global; conexão HTTPS usa o IP público validado, sem seguir redirecionamentos automaticamente.
+- [x] Conteúdo remoto na página é exibido por componentes de texto simples, sem interpretação de Markdown/HTML.
+- [x] Link mostra domínio de destino e o aviso “Link informado por outra instância; confira antes de usar”.
+- [x] `atualizar_instancia`: baixa e valida antes de substituir, arquiva a versão anterior e usa troca atômica; em falha de validação, o arquivo atual não é tocado.
+- [x] Botão **Atualizar** por instância seguida.
+- [x] `testes/teste_ciranda_seguranca.py`: endereço recusado, DNS privado, IP fixado na conexão, resposta acima de 2 MB, limites de 500 serviços e texto, atualização bem-sucedida e falha sem perda.
+- [x] `testes/teste_ciranda_tela.py` atualizado: texto Markdown/HTML literal, domínio, aviso e botão Atualizar.
+- Testes `testes/teste_ciranda_seguranca.py` e `testes/teste_ciranda_tela.py`: **NÃO EXECUTADOS**.
+
+## Testes pendentes — resultado real
+
+Todos os testes abaixo permanecem **NÃO EXECUTADO**. O conector GitHub permite gravar e ler arquivos, mas não executa Python ou Streamlit nesta sessão.
+
+- `testes/teste_ciranda_instancia.py`
+- `testes/teste_ciranda_servico.py`
+- `testes/teste_ciranda_publicar.py`
+- `testes/teste_ciranda_seguir.py`
+- `testes/teste_ciranda_seguranca.py`
+- `testes/teste_ciranda_tela.py`
+- `testes/teste_ciranda_app.py`
+- `MISM2/algoritimos/teste_apoio.py`
+- `MISM2/dashboard/teste_apoio_tela.py`
+
+O PR existente deve receber estes commits automaticamente porque sua origem é a branch `federacao`; não foi feito merge.
+
+
+## Etapa de especificação e conformidade — branch `testes-e-especificacao`
+
+Referência de partida: ponta da branch `federacao` em `1049747c3bb50c98892ee33e892f61d08e28c64b`. Esta etapa foi isolada na branch `testes-e-especificacao`; não altera `main), `limpeza`, MISM, MISM2 independente ou MISM3.
+
+- [x] Especificação v0.1 criada a partir da leitura do conversor, publicador, importador, tela, demonstração e testes existentes. Onde o código não declara versão de protocolo, isso está explicitado; a declaração de versão foi separada como proposta futura.
+- [x] Esquema JSON Schema criado com as 12 propriedades de `CAMPOS_PERMITIDOS`; o teste compara os conjuntos e a quantidade de campos.
+- [x] Verificador `ciranda/conformidade.py` criado com relatório estruturado, interface CLI, validações de descoberta/perfil/coleção/atividades/documentos, limites compartilhados com `seguir.py), datas e alerta heurístico de CPF/CNS.
+- [x] Nove descritores de casos de conformidade adicionados: um válido e oito cenários inválidos/alerta, materializados em diretórios temporários pelo teste.
+- [x] Teste da conformidade inclui varredura dos documentos gerados a partir de todos os itens atuais de `MISM2/algoritimos/apoio.py` (`ITENS`). A varredura imprime todos os alertas encontrados sem imprimir os números detectados.
+- [x] Executor `testes/rodar_todos.py` criado; executa os scripts `testes/teste_ciranda_*.py` em subprocessos, com timeout, contagem de OK/FALHOU e código de saída agregado.
+- [x] Workflow `.github/workflows/testes-ciranda.yml` gravado na raiz para push e pull request, Python 3.12, instalação de dependências com alternativa mínima e execução do executor.
+- [x] Guia curto `docs/COMO_TESTAR.md` adicionado.
+- **Execução local pelo agente:** não disponível; nenhum teste foi declarado como aprovado nesta etapa.
+- **Varredura de privacidade do catálogo real:** implementada no teste, resultado ainda **NÃO EXECUTADO**. Se o workflow apontar achados, serão registrados aqui após a leitura do log.
+- **Workflow GitHub:** aguardando abertura do pull request para a branch `federacao`; resultado ainda **NÃO EXECUTADO / NÃO DISPONÍVEL**.
+
+
+### Resultado real do workflow — commit `9dc4ee9a80bf8841b88c27150da3b72319c6ddcf`
+
+- Workflow **Testes Ciranda**, execução push nº 5: **SUCCESS**.
+- Dependências instaladas com sucesso a partir de `requirements.txt`; não foi necessário usar a alternativa mínima.
+- Executor: 8 arquivos de teste, **70 OK, 0 FALHOU**, sem timeout ou erro de processo.
+- Varredura de privacidade do catálogo real: **86 itens examinados; 0 alertas heurísticos** de CPF válido ou sequência de 15 dígitos.
+- A saída do executor foi ajustada para tornar visíveis no log os alertas de privacidade, sem revelar os números detectados.
+- PR #3 aberto para `federacao`, sem merge. A execução acima validou o commit indicado; o commit que registra este resultado no próprio documento também dispara uma nova execução do workflow.
