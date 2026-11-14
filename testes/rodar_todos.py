@@ -31,6 +31,10 @@ for arquivo in arquivos:
         if processo.returncode != 0 or falhou:
             falha_geral = True
         linhas.append((Path(arquivo).name, ok, falhou, time.monotonic() - inicio))
+        # Expõe os alertas da varredura de privacidade sem imprimir os valores detectados.
+        for linha in saida.splitlines():
+            if "AVISO PRIVACIDADE:" in linha or "Catálogo real:" in linha:
+                print(linha)
         if processo.returncode != 0:
             print("ERRO DE PROCESSO — {} (código {})".format(Path(arquivo).name, processo.returncode))
             print(saida[-6000:])
