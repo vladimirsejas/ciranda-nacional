@@ -75,3 +75,13 @@ Referência de partida: ponta da branch `federacao` em `1049747c3bb50c98892ee33e
 - **Execução local pelo agente:** não disponível; nenhum teste foi declarado como aprovado nesta etapa.
 - **Varredura de privacidade do catálogo real:** implementada no teste, resultado ainda **NÃO EXECUTADO**. Se o workflow apontar achados, serão registrados aqui após a leitura do log.
 - **Workflow GitHub:** aguardando abertura do pull request para a branch `federacao`; resultado ainda **NÃO EXECUTADO / NÃO DISPONÍVEL**.
+
+
+### Resultado real do workflow — commit `9dc4ee9a80bf8841b88c27150da3b72319c6ddcf`
+
+- Workflow **Testes Ciranda**, execução push nº 5: **SUCCESS**.
+- Dependências instaladas com sucesso a partir de `requirements.txt`; não foi necessário usar a alternativa mínima.
+- Executor: 8 arquivos de teste, **70 OK, 0 FALHOU**, sem timeout ou erro de processo.
+- Varredura de privacidade do catálogo real: **86 itens examinados; 0 alertas heurísticos** de CPF válido ou sequência de 15 dígitos.
+- A saída do executor foi ajustada para tornar visíveis no log os alertas de privacidade, sem revelar os números detectados.
+- PR #3 aberto para `federacao`, sem merge. A execução acima validou o commit indicado; o commit que registra este resultado no próprio documento também dispara uma nova execução do workflow.
