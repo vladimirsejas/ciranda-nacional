@@ -58,3 +58,20 @@ Todos os testes abaixo permanecem **NÃO EXECUTADO**. O conector GitHub permite 
 - `MISM2/dashboard/teste_apoio_tela.py`
 
 O PR existente deve receber estes commits automaticamente porque sua origem é a branch `federacao`; não foi feito merge.
+
+
+## Etapa de especificação e conformidade — branch `testes-e-especificacao`
+
+Referência de partida: ponta da branch `federacao` em `1049747c3bb50c98892ee33e892f61d08e28c64b`. Esta etapa foi isolada na branch `testes-e-especificacao`; não altera `main), `limpeza`, MISM, MISM2 independente ou MISM3.
+
+- [x] Especificação v0.1 criada a partir da leitura do conversor, publicador, importador, tela, demonstração e testes existentes. Onde o código não declara versão de protocolo, isso está explicitado; a declaração de versão foi separada como proposta futura.
+- [x] Esquema JSON Schema criado com as 12 propriedades de `CAMPOS_PERMITIDOS`; o teste compara os conjuntos e a quantidade de campos.
+- [x] Verificador `ciranda/conformidade.py` criado com relatório estruturado, interface CLI, validações de descoberta/perfil/coleção/atividades/documentos, limites compartilhados com `seguir.py), datas e alerta heurístico de CPF/CNS.
+- [x] Nove descritores de casos de conformidade adicionados: um válido e oito cenários inválidos/alerta, materializados em diretórios temporários pelo teste.
+- [x] Teste da conformidade inclui varredura dos documentos gerados a partir de todos os itens atuais de `MISM2/algoritimos/apoio.py` (`ITENS`). A varredura imprime todos os alertas encontrados sem imprimir os números detectados.
+- [x] Executor `testes/rodar_todos.py` criado; executa os scripts `testes/teste_ciranda_*.py` em subprocessos, com timeout, contagem de OK/FALHOU e código de saída agregado.
+- [x] Workflow `.github/workflows/testes-ciranda.yml` gravado na raiz para push e pull request, Python 3.12, instalação de dependências com alternativa mínima e execução do executor.
+- [x] Guia curto `docs/COMO_TESTAR.md` adicionado.
+- **Execução local pelo agente:** não disponível; nenhum teste foi declarado como aprovado nesta etapa.
+- **Varredura de privacidade do catálogo real:** implementada no teste, resultado ainda **NÃO EXECUTADO**. Se o workflow apontar achados, serão registrados aqui após a leitura do log.
+- **Workflow GitHub:** aguardando abertura do pull request para a branch `federacao`; resultado ainda **NÃO EXECUTADO / NÃO DISPONÍVEL**.
